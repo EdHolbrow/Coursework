@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Memory Card Game</title>
+</head>
+
+<body>
+<script>
+    function sortCards(players){
+        var playerCards1 = [];
+        var playerCards2 = [];
+        var playerCards3 = [];
+        var playerCards4 = [];
+       for(i=0; i < players; i ++){
+           for(j = 0; j < 4; j++ ) {
+           if(i==0){
+               playercards1[j] = getCards()
+           }
+           }
+       }
+    }
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
+    function getCards(){
+        var card;
+        var value;
+        card = getRandomInt(52) + 1;
+        for(i = 0; i< usedcards().length ; i++)
+
+        if(card == 13 || card == 26 || card == 39 || card == 52 ){
+value = "king";
+        }
+
+}
+
+
+
+</script>
+</body>
+</html>

@@ -6,30 +6,32 @@
 
     <script>
 
-
         function selectGame() {
 
             //hide all the areas of the page you don't want to show yet
             document.getElementById("singlePlayer").hidden = true;
             document.getElementById("multiPlayer").hidden = true;
-
+            document.getElementById("selectNumPlayers").hidden = true;
 
             var players = document.getElementById("numPlayers");  //your code
             console.log("Players is " + players);                               //look at the console, value is null, doesn't work
 
             if (document.getElementById('r1').checked) {
-                                //  OLD CODE if (players = 1){  this is not reading the value from the radio buttons
+                //  OLD CODE if (players = 1){  this is not reading the value from the radio buttons
                 singlePlayer();  // be super careful with naming  singleplayer V singlePlayer, you will get confused as your code grows
-                                // and you will lose marks for inconsistency.  You've used camel case for startUp
-            } else  {      //why bother with this else if? } else if(players > 1 && players < 5){ Just use else  Input validated through radio buttons
+                // and you will lose marks for inconsistency.  You've used camel case for startUp
+            } else {      //why bother with this else if? } else if(players > 1 && players < 5){ Just use else  Input validated through radio buttons
                 multiPlayer();
             }
 
             document.getElementById("selectNumPlayers").hidden = true;  //hide this area of page now it's not needed
         }
 
+        function loadRules() {
+            document.getElementById("tutorial").hidden = false;
+        }
 
-        function singlePlayer(){
+        function singlePlayer() {
             alert("User selected single player game");  //use console.log in Chrome hit F12 and look at console in developer tools
                                                         //if you keep using alert() for testing you'll have to remove them all later :-(
 
@@ -38,40 +40,42 @@
         }
 
 
-        function multiPlayer(){
+        function multiPlayer() {
             alert("User selected multi player game");  //use console.log in Chrome hit F12 and look at console in developer tools
-                                                        //if you keep using alert() for testing you'll have to remove them all later :-(
+            //if you keep using alert() for testing you'll have to remove them all later :-(
             document.getElementById("multiPlayer").hidden = false;
         }
 
 
-        function sortCards(players){
+        function sortCards(players) {
             var playerCards1 = [];
             var playerCards2 = [];
             var playerCards3 = [];
             var playerCards4 = [];
-            for(i=0; i < players; i ++){
-                for(j = 0; j < 4; j++ ) {
-                    if(i==0){
+            for (i = 0; i < players; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (i == 0) {
                         playercards1[j] = getCards()
                     }
                 }
             }
         }
+
         function getRandomInt(max) {
             return Math.floor(Math.random() * Math.floor(max));
         }
-        function getCards(){
+
+        function getCards() {
             var card;
             var value;
             card = getRandomInt(52) + 1;
-            for(i = 0; i< usedcards().length ; i++)
+            for (i = 0; i < usedcards().length; i++)
 
-                if(card == 13 || card == 26 || card == 39 || card == 52 ){
+                if (card == 13 || card == 26 || card == 39 || card == 52) {
                     value = "king";
-                } else if (card == 12 || card == 25 || card == 38 || card == 51 ) {
+                } else if (card == 12 || card == 25 || card == 38 || card == 51) {
                     value = "queen";
-                }else if (card == 11 || card == 24 || card == 37 || card == 50 ) {
+                } else if (card == 11 || card == 24 || card == 37 || card == 50) {
                     value = "jack";
                 }
         }
@@ -80,43 +84,48 @@
 </head>
 
 <body>
-<div id ="selectNumPlayers">
-<form>
 
-    <input type="radio" name="numPlayers"  id="r1"  checked>  1 Player
-    <input type="radio" name="numPlayers"  id="r2" >    2 Player
-    <input type="radio" name="numPlayers"  id="r3" >   3 Player
+<div id="startScreen">
+    <form>
+        <h1>Read the rules? or ready to play?</h1>
+        <button onclick='loadRules();'>Rules</button>
+        <button onclick='sortCards();'>Play</button>
 
-<br>
+    </form>
+</div>
 
-    1 Player: <input type="Radio" name="numPlayers"><br>
-    2 Player: <input type="Radio" name="numPlayers"><br>
-    3 Player: <input type="Radio" name="numPlayers"><br>
-    4 Player: <input type="Radio" name="numPlayers"><br>
-
-</form>
+<div id="selectNumPlayers">
+    <form>
+        <h1>Select the amount of players</h1>
+        <input type="radio" name="numPlayers" id="r1" checked> 1 Player
+        <input type="radio" name="numPlayers" id="r2"> 2 Players
+        <input type="radio" name="numPlayers" id="r3"> 3 Players
+        <input type="radio" name="numPlayers" id="r4"> 4 Players
+        <br>
+    </form>
 
     <button onclick='selectGame();'>Submit</button>  <!-- personally I find this easier to work with than submit button as submit button wants
                                                 to do the default submit behaviour which we don't want.  PUT OUTSIDE FORM-->
-
 </div>
 
-
-
-
-<div id ="singlePlayer">
+<div id="singlePlayer">
 
     Put all the HTML etc here for a single player
 
+
 </div>
 
-<div id ="multiPlayer">
+<div id="multiPlayer">
 
     Put all the HTML etc here for a multiple players
 
 </div>
 
+<div id="tutorial">
+    <p>This game is about trying to get the lowest score possible. You get four cards, only two of which you know.</p>
+<p></p>
 
+</div>
 
 
 </body>

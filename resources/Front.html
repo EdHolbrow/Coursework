@@ -5,30 +5,32 @@
     <title>Memory Card Game</title>
 
     <script>
+        function loadRules() {
+            document.getElementById("tutorial").style.visibility = "visible";
+        }
 
         function selectGame() {
 
-            //hide all the areas of the page you don't want to show yet
-            document.getElementById("singlePlayer").hidden = true;
-            document.getElementById("multiPlayer").hidden = true;
-            document.getElementById("selectNumPlayers").hidden = true;
+            //hide all the areas of the page you don't want to show yet]
+            document.getElementById("singlePlayer").style.visibility = "hidden";
+            document.getElementById("multiPlayer").style.visibility = "hidden";
 
-            var players = document.getElementById("numPlayers");  //your code
-            console.log("Players is " + players);                               //look at the console, value is null, doesn't work
 
+                                           //look at the console, value is null, doesn't work
+
+        }
+
+        function playerSelect() {
             if (document.getElementById('r1').checked) {
+                document.getElementById("selectNumPlayers").style.visibility = "hidden";
+                var players = document.getElementById("numPlayers");  //your code
+                console.log("Players is " + players);
                 //  OLD CODE if (players = 1){  this is not reading the value from the radio buttons
                 singlePlayer();  // be super careful with naming  singleplayer V singlePlayer, you will get confused as your code grows
                 // and you will lose marks for inconsistency.  You've used camel case for startUp
             } else {      //why bother with this else if? } else if(players > 1 && players < 5){ Just use else  Input validated through radio buttons
                 multiPlayer();
             }
-
-            document.getElementById("selectNumPlayers").hidden = true;  //hide this area of page now it's not needed
-        }
-
-        function loadRules() {
-            document.getElementById("tutorial").hidden = false;
         }
 
         function singlePlayer() {
@@ -68,9 +70,17 @@
         function getCards() {
             var card;
             var value;
-            card = getRandomInt(52) + 1;
-            for (i = 0; i < usedcards().length; i++)
-
+            var usedCards = [];
+            var match;
+            for (i = 0; i < usedCards.length; i++) {
+                while (match = false) {
+                    card = getRandomInt(52) + 1;
+                    if (card == usedCards[j]) {
+                        match = true;
+                    } else {
+                        match = false
+                    }
+                }
                 if (card == 13 || card == 26 || card == 39 || card == 52) {
                     value = "king";
                 } else if (card == 12 || card == 25 || card == 38 || card == 51) {
@@ -78,6 +88,9 @@
                 } else if (card == 11 || card == 24 || card == 37 || card == 50) {
                     value = "jack";
                 }
+                usedCards[i] = card;
+            }
+            return value
         }
     </script>
 
@@ -89,7 +102,7 @@
     <form>
         <h1>Read the rules? or ready to play?</h1>
         <button onclick='loadRules();'>Rules</button>
-        <button onclick='sortCards();'>Play</button>
+        <button onclick='playerSelect();'>Play</button>
 
     </form>
 </div>
@@ -123,7 +136,7 @@
 
 <div id="tutorial">
     <p>This game is about trying to get the lowest score possible. You get four cards, only two of which you know.</p>
-<p></p>
+    <p></p>
 
 </div>
 

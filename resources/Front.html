@@ -5,23 +5,27 @@
     <title>Memory Card Game</title>
 
     <script>
-        function loadRules() {
-            // Rachel this doesn't hide
-            document.getElementById("tutorial").style.visibility = "visible";
+
+        function pageLoad() {
+            document.getElementById("selectNumPlayers").style.visibility = "hidden";
+            document.getElementById("singlePlayer").style.visibility = "hidden";
+            document.getElementById("multiPlayer").style.visibility = "hidden";
+            document.getElementById("tutorial").style.visibility = "hidden";
+        }
+
+        function showRules() {
+            console.log("Show rules clicked");
+            document.getElementById('tutorial').style.visibility = 'visible';
+        }
+
+
+        function showPlayOptions() {
+            document.getElementById("selectNumPlayers").style.visibility = 'visible';
+
         }
 
         function selectGame() {
-            // Rachel this doesn't hide
-            //hide all the areas of the page you don't want to show yet]
-            document.getElementById("singlePlayer").style.visibility = "hidden";
-            document.getElementById("multiPlayer").style.visibility = "hidden";
 
-
-                                           //look at the console, value is null, doesn't work
-
-        }
-
-        function playerSelect() {
             if (document.getElementById('r1').checked) {
                 document.getElementById("selectNumPlayers").style.visibility = "hidden";
                 var players = document.getElementById("numPlayers");  //your code
@@ -37,18 +41,15 @@
         function singlePlayer() {
             alert("User selected single player game");  //use console.log in Chrome hit F12 and look at console in developer tools
                                                         //if you keep using alert() for testing you'll have to remove them all later :-(
-
             document.getElementById("singlePlayer").hidden = false; //unhide this section
             //or open a new page, depends on how complex the page is going to get
         }
-
 
         function multiPlayer() {
             alert("User selected multi player game");  //use console.log in Chrome hit F12 and look at console in developer tools
             //if you keep using alert() for testing you'll have to remove them all later :-(
             document.getElementById("multiPlayer").hidden = false;
         }
-
 
         function sortCards(players) {
             var playerCards1 = [];
@@ -97,15 +98,14 @@
 
 </head>
 
-<body>
+<body onload="pageLoad()">
 
 <div id="startScreen">
-    <form>
-        <h1>Read the rules? or ready to play?</h1>
-        <button onclick='loadRules();'>Rules</button>
-        <button onclick='playerSelect();'>Play</button>
 
-    </form>
+    <h1>Read the rules? or ready to play?</h1>
+    <button onclick="showRules()">Rules</button>
+    <button onclick='showPlayOptions();'>Play</button>
+
 </div>
 
 <div id="selectNumPlayers">

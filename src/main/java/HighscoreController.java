@@ -1,3 +1,5 @@
+import javafx.geometry.Pos;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -20,7 +22,7 @@ public class HighscoreController {
             System.out.println("Database error: " + exception.getMessage());
         }
     }
-    public static void selectEasy(String difficultySelected) {
+    public static void selectDifficulty(String difficultySelected) {
         try {
 
                 PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores WHERE Difficulty = ? ");
@@ -59,7 +61,7 @@ public class HighscoreController {
             System.out.println("Database error: " + exception.getMessage());
         }
     }
-    public static void insertDatabase(int HighScoreID, String PlayerName,String Difficulty, int PositionOnBoard, int Score, int UserID) {
+    public static void insertDatabase(int HighScoreID, String PlayerName, String Difficulty, int PositionOnBoard, int Score, int UserID) {
         try {
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO HighScores (HighScoreID, PlayerName, Difficulty, PositionOnBoard, Score, UserID) VALUES (?, ?, ?, ?, ?, ?)");
             ps.setInt(1, HighScoreID);
@@ -73,13 +75,13 @@ public class HighscoreController {
             System.out.println("Database error: " + exception.getMessage());
         }
     }
-    public static void updateDatabase(int HighScoreID, String PlayerName,String Difficulty, int PositionOnBoard, int Score, int UserID ) {
+    public static void updateDatabase(String PlayerName,String Difficulty, int PositionOnBoard, int Score, int UserID ) {
         try {
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET PlayerName = ?, Difficulty = ?, PositionOnBoard = ?, Score = ?, UserID = ?) WHERE HighScoreID = ?");
-            ps.setInt(1, HighScoreID);
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET PlayerName = ?, Difficulty = ?, Score = ?, UserID = ?) WHERE PositionOnBoard = ?");
+
             ps.setString(2, PlayerName);
             ps.setString(3, Difficulty);
-            ps.setInt(4, PositionOnBoard);
+            ps.setInt(3, PositionOnBoard);
             ps.setInt(5, Score);
             ps.setInt(6, UserID);
             ps.executeUpdate();

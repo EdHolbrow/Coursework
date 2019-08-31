@@ -1,20 +1,32 @@
 import org.sqlite.SQLiteConfig;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
-
+import java.util.Scanner;
 
 public class Main {
 
     public static Connection db = null;
 
     public static void main(String[] args) {
+
         //this opens the database
         openDatabase("CWDatabase1.db");
-
-        HighscoreController.selectDatabase();
-        HighscoreController.insertDatabase();
-        HighscoreController.updateDatabase();
-        HighscoreController.deleteDatabase(5);
+//
+//        int HighScoreID, PositionOnBoard, score, UserID;
+//        String PlayerName, Difficulty;
+//        PositionOnBoard = 0;
+//        PlayerName = "Greg";
+//        UserID = 1;
+//        Difficulty = "Easy";
+//        Scanner sc = new Scanner(System.in);
+UserController.selectAllUsers();
+//        System.out.println("Enter Score");
+//        score = sc.nextInt();
+        //HighscoreController.selectDatabase();
+        //HighscoreController.insertDatabase();
+       // HighscoreController.updateDatabase(PlayerName, Difficulty, PositionOnBoard, score, UserID);
+        //HighscoreController.deleteDatabase(5);
         //this closes the database
         closeDatabase();
     }

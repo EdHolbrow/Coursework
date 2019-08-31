@@ -24,7 +24,6 @@ public class HighscoreController {
     }
     public static void selectDifficulty(String difficultySelected) {
         try {
-
                 PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores WHERE Difficulty = ? ");
                 ps.setString(1, difficultySelected);
                 ResultSet results = ps.executeQuery();
@@ -42,7 +41,6 @@ public class HighscoreController {
              catch(Exception exception){
                 System.out.println("Database error: " + exception.getMessage());
             }
-
     }
     public static void selectTopThree() {
         try {

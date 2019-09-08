@@ -13,10 +13,10 @@ public class HighscoreController {
                 int HighScoreID = results.getInt(1);
                 String PlayerName = results.getString(2);
                 String Difficulty = results.getString(3);
-                int PositionOnBoard = results.getInt(5);
-                int score = results.getInt(5);
+                int PositionOnBoard = results.getInt(4);
+                int Score = results.getInt(5);
                 int UserID = results.getInt(6);
-                System.out.println(HighScoreID + " " + PlayerName + " " +Difficulty + " " +PositionOnBoard + " "+ score + " " + UserID);
+                System.out.println(HighScoreID + " " + PlayerName + " " +Difficulty + " " +PositionOnBoard + " "+ Score + " " + UserID);
             }
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
@@ -32,10 +32,10 @@ public class HighscoreController {
                     int HighScoreID = results.getInt(1);
                     String PlayerName = results.getString(2);
                     String Difficulty = results.getString(3);
-                    int PositionOnBoard = results.getInt(5);
-                    int score = results.getInt(5);
+                    int PositionOnBoard = results.getInt(4);
+                    int Score = results.getInt(5);
                     int UserID = results.getInt(6);
-                    System.out.println(HighScoreID + " " + PlayerName + " " + Difficulty + " " + PositionOnBoard + " " + score + " " + UserID);
+                    System.out.println(HighScoreID + " " + PlayerName + " " + Difficulty + " " + PositionOnBoard + " " + Score + " " + UserID);
                 }
             }
              catch(Exception exception){
@@ -50,10 +50,10 @@ public class HighscoreController {
                     int HighScoreID = results.getInt(1);
                     String PlayerName = results.getString(2);
                     String Difficulty = results.getString(3);
-                    int PositionOnBoard = results.getInt(5);
-                    int score = results.getInt(5);
+                    int PositionOnBoard = results.getInt(4);
+                    int Score = results.getInt(5);
                     int UserID = results.getInt(6);
-                    System.out.println(HighScoreID + " " + PlayerName + " " + Difficulty + " " + PositionOnBoard + " " + score + " " + UserID);
+                    System.out.println(HighScoreID + " " + PlayerName + " " + Difficulty + " " + PositionOnBoard + " " + Score + " " + UserID);
                 }
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
@@ -79,7 +79,7 @@ public class HighscoreController {
 
             ps.setString(2, PlayerName);
             ps.setString(3, Difficulty);
-            ps.setInt(3, PositionOnBoard);
+            ps.setInt(4, PositionOnBoard);
             ps.setInt(5, Score);
             ps.setInt(6, UserID);
             ps.executeUpdate();

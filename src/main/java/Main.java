@@ -13,7 +13,7 @@ public class Main {
 
         //this opens the database
         openDatabase("CWDatabase1.db");
-       HighscoreController.selectTopThree();
+    //   HighscoreController.findScoresBelow();
 
         //HighscoreController.selectDatabase();
         //HighscoreController.insertDatabase();

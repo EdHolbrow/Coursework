@@ -41,7 +41,7 @@ public class UserController {
 
     public static void selectAllUsers() {
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Users WHERE UserID  ");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Users ");
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 int UserID = results.getInt(1);

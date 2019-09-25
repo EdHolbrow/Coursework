@@ -1,9 +1,7 @@
 import org.sqlite.SQLiteConfig;
 
-import javax.jws.soap.SOAPBinding;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Scanner;
 
 public class Main {
 
@@ -13,12 +11,13 @@ public class Main {
 
         //this opens the database
         openDatabase("CWDatabase1.db");
-    //   HighscoreController.findScoresBelow();
+        int pathCount = 0;
+        HighscoreController.updateHighScoreCenter(11, "Easy", "Greg", 1, 0, pathCount);
 
         //HighscoreController.selectDatabase();
         //HighscoreController.insertDatabase();
         // HighscoreController.updateDatabase(PlayerName, Difficulty, PositionOnBoard, score, UserID);
-       // UserController.deleteDatabase(5);
+        // UserController.deleteDatabase(5);
         //this closes the database
         closeDatabase();
     }

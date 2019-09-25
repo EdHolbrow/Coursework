@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="CWDatabase1 [2]" uuid="8b110dd5-22f9-46dd-ab20-6a80ceea9b85">
+    <data-source source="LOCAL" name="CWDatabase1" uuid="cf8764d9-bfae-45da-85d4-ad9de1d64cf5">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\edwar\IdeaProjects\Coursework\resources\CWDatabase1.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\88464\IdeaProjects\Coursework\resources\CWDatabase1.db</jdbc-url>
       <driver-properties>
         <property name="enable_load_extension" value="true" />
       </driver-properties>

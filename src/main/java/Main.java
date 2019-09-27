@@ -11,9 +11,10 @@ public class Main {
 
         //this opens the database
         openDatabase("CWDatabase1.db");
-        int pathCount = 0;
-        HighscoreController.updateHighScoreCenter(11, "Easy", "Greg", 1, 0, pathCount);
 
+    HighscoreController.updateScore(11, "Greg", "Easy", 1);
+
+HighscoreController.selectDifficulty("Easy");
         //HighscoreController.selectDatabase();
         //HighscoreController.insertDatabase();
         // HighscoreController.updateDatabase(PlayerName, Difficulty, PositionOnBoard, score, UserID);

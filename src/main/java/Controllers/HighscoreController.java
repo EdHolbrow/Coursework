@@ -1,61 +1,94 @@
+package Controllers;
+
+import Server.Main;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class HighscoreController {
+    @GET
+    @Path("selectAll")
+    @Produces(MediaType.APPLICATION_JSON)
 
-    public static void selectDatabase() {
+    public String  selectAllScores() {
+        System.out.println("/Highscores/selectAll");
+        JSONArray list = new JSONArray();
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores");
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                int HighScoreID = results.getInt(1);
-                String PlayerName = results.getString(2);
-                String Difficulty = results.getString(3);
-                int PositionOnBoard = results.getInt(4);
-                int Score = results.getInt(5);
-                int UserID = results.getInt(6);
-                System.out.println(HighScoreID + " " + PlayerName + " " + Difficulty + " " + PositionOnBoard + " " + Score + " " + UserID);
+
+                JSONObject item = new JSONObject();
+                item.put("HighscoreID", results.getInt(1));
+                item.put("PlayerName", results.getString(2));
+                item.put("Difficulty", results.getString(3));
+                item.put("PositionOnBoard", results.getInt(4));
+                item.put( "Score", results.getInt(5));
+                item.put( "UserID", results.getInt(6));
+                list.add(item);
             }
+            return list.toString();
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
+
         }
     }
-
-    public static void selectDifficulty(String difficultySelected) {
+    @GET
+    @Path("selectDifficulty")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String selectDifficulty(String difficultySelected) {
+        System.out.println("/Highscores/selectDifficulty");
+        JSONArray list = new JSONArray();
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores WHERE Difficulty = ? ");
             ps.setString(1, difficultySelected);
             ResultSet results = ps.executeQuery();
-
             while (results.next()) {
-                int HighScoreID = results.getInt(1);
-                String PlayerName = results.getString(2);
-                String Difficulty = results.getString(3);
-                int PositionOnBoard = results.getInt(4);
-                int Score = results.getInt(5);
-                int UserID = results.getInt(6);
-                System.out.println(HighScoreID + " " + PlayerName + " " + Difficulty + " " + PositionOnBoard + " " + Score + " " + UserID);
+                JSONObject item = new JSONObject();
+                item.put("HighscoreID", results.getInt(1));
+                item.put("PlayerName", results.getString(2));
+                item.put("Difficulty", results.getString(3));
+                item.put("PositionOnBoard", results.getInt(4));
+                item.put( "Score", results.getInt(5));
+                item.put( "UserID", results.getInt(6));
+                list.add(item);
+
             }
+            return list.toString();
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
         }
     }
-
-    public static void selectTopThree() {
+    @GET
+    @Path("selectTopThree")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String selectTopThree() {
+        System.out.println("/Highscores/selectTopThree");
+        JSONArray list = new JSONArray();
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores WHERE PositionOnBoard < 4 ");
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                int HighScoreID = results.getInt(1);
-                String PlayerName = results.getString(2);
-                String Difficulty = results.getString(3);
-                int PositionOnBoard = results.getInt(4);
-                int Score = results.getInt(5);
-                int UserID = results.getInt(6);
-                System.out.println(HighScoreID + " " + PlayerName + " " + Difficulty + " " + PositionOnBoard + " " + Score + " " + UserID);
+                JSONObject item = new JSONObject();
+                item.put("HighscoreID", results.getInt(1));
+                item.put("PlayerName", results.getString(2));
+                item.put("Difficulty", results.getString(3));
+                item.put("PositionOnBoard", results.getInt(4));
+                item.put( "Score", results.getInt(5));
+                item.put( "UserID", results.getInt(6));
+                list.add(item);
             }
+            return list.toString();
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
         }
     }
 
@@ -75,34 +108,20 @@ public class HighscoreController {
     }
 
 
-    public static void updateDatabase(int topPosition) {
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET PlayerName = ?, Difficulty = ?, Score = ?, UserID = ?) WHERE PositionOnBoard = ?");
-
-//            ps.setString(2, PlayerName);
-//            ps.setString(3, Difficulty);
-//            ps.setInt(4, PositionOnBoard);
-//            ps.setInt(5, Score);
-//            ps.setInt(6, UserID);
-            ps.executeUpdate();
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-        }
-    }
-
-    public static void deleteDatabase(int HighScoreID) {
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM HighScores WHERE HighScoreID = ?)");
-            ps.setInt(1, HighScoreID);
-            ps.executeUpdate();
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-        }
-    }
 
 
-    public static void updateScore(int Score, String PlayerName, String Difficulty, int UserID) {
-        try {
+
+
+    @POST
+    @Path("update")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String  updateScore(@FormDataParam("PlayerName") String PlayerName, @FormDataParam("Score") Integer Score,@FormDataParam("Difficulty") String Difficulty,@FormDataParam("UserID") Integer UserID) {
+            try {
+                if (PlayerName == null || Score == null || Difficulty == null|| UserID == null) {
+                    throw new Exception("One or more form data parameters are missing in the HTTP request.");
+                }
+
             PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET PlayerName = ?, Score = ?, UserID = ? WHERE PositionOnBoard = 10 AND Difficulty = ?");
             ps.setString(1, PlayerName);
             ps.setInt(2, Score);
@@ -110,11 +129,15 @@ public class HighscoreController {
             ps.setString(4, Difficulty);
 
 
-            ps.executeUpdate();
-            updatePOB(Score, Difficulty);
+            ps.execute();
+                return "{\"status\": \"OK\"}";
+
+
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
-        }
+                return "{\"error\": \"Unable to update item, please see server console for more info.\"}";
+            }
+
     }
 
     public static void updatePOB(int Score, String Difficulty) {

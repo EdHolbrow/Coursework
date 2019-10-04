@@ -113,7 +113,7 @@ public class HighscoreController {
 
 
     @POST
-    @Path("update")
+    @Path("updateScores")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String  updateScore(@FormDataParam("PlayerName") String PlayerName, @FormDataParam("Score") Integer Score,@FormDataParam("Difficulty") String Difficulty,@FormDataParam("UserID") Integer UserID) {

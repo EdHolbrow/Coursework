@@ -42,10 +42,13 @@ public class HighscoreController {
     @GET
     @Path("selectDifficulty")
     @Produces(MediaType.APPLICATION_JSON)
-    public String selectDifficulty(String difficultySelected) {
+    public String selectDifficulty(@FormDataParam("difficultySelected") String difficultySelected) {
         System.out.println("/Highscores/selectDifficulty");
         JSONArray list = new JSONArray();
         try {
+            if (difficultySelected == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
             PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores WHERE Difficulty = ? ");
             ps.setString(1, difficultySelected);
             ResultSet results = ps.executeQuery();
@@ -91,26 +94,6 @@ public class HighscoreController {
             return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
         }
     }
-
-    public static void insertDatabase(int HighScoreID, String PlayerName, String Difficulty, int Score, int UserID) {
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET PlayerName = ?, Difficulty = ?, Score = ?, UserID = ?) WHERE HighScoreID = ?");
-
-            ps.setString(2, PlayerName);
-            ps.setString(3, Difficulty);
-
-            ps.setInt(5, Score);
-            ps.setInt(6, UserID);
-            ps.executeUpdate();
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-        }
-    }
-
-
-
-
-
 
     @POST
     @Path("updateScores")

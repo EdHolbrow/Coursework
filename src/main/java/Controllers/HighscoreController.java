@@ -9,14 +9,14 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+@Path("Highscores")
 public class HighscoreController {
     @GET
     @Path("selectAll")
     @Produces(MediaType.APPLICATION_JSON)
 
     public String  selectAllScores() {
-        System.out.println("/Highscores/selectAll");
+        System.out.println("Highscores/selectAll");
         JSONArray list = new JSONArray();
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores");

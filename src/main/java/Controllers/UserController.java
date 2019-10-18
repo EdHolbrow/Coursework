@@ -9,7 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+@Path("Users")
 public class UserController {
 
     @POST
@@ -120,7 +120,7 @@ public class UserController {
             }
             System.out.println("Users/deleteUser id=" + UserID);
 
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE UserID = ?)");
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE UserID = ?");
             ps.setInt(1, UserID);
             ps.executeUpdate();
             return "{\"status\": \"OK\"}";

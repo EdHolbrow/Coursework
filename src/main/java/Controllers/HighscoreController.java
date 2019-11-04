@@ -11,34 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 @Path("Highscores")
 public class HighscoreController {
-    @GET
-    @Path("selectAll")
-    @Produces(MediaType.APPLICATION_JSON)
 
-    public String  selectAllScores() {
-        System.out.println("Highscores/selectAll");
-        JSONArray list = new JSONArray();
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores");
-            ResultSet results = ps.executeQuery();
-            while (results.next()) {
 
-                JSONObject item = new JSONObject();
-                item.put("HighscoreID", results.getInt(1));
-                item.put("PlayerName", results.getString(2));
-                item.put("Difficulty", results.getString(3));
-                item.put("PositionOnBoard", results.getInt(4));
-                item.put( "Score", results.getInt(5));
-                item.put( "UserID", results.getInt(6));
-                list.add(item);
-            }
-            return list.toString();
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
-
-        }
-    }
     @GET
     @Path("selectDifficulty")
     @Produces(MediaType.APPLICATION_JSON)

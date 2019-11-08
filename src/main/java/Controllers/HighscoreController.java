@@ -12,7 +12,33 @@ import java.sql.ResultSet;
 @Path("Highscores")
 public class HighscoreController {
 
+    @GET
+    @Path("selectAll")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String  selectAllScores() {
+        System.out.println("Highscores/selectAll");
+        JSONArray list = new JSONArray();
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores");
+            ResultSet results = ps.executeQuery();
+            while (results.next()) {
 
+                JSONObject item = new JSONObject();
+                item.put("HighscoreID", results.getInt(1));
+                item.put("PlayerName", results.getString(2));
+                item.put("Difficulty", results.getString(3));
+                item.put("PositionOnBoard", results.getInt(4));
+                item.put( "Score", results.getInt(5));
+                item.put( "UserID", results.getInt(6));
+                list.add(item);
+            }
+            return list.toString();
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
+
+        }
+    }
     @GET
     @Path("selectDifficulty")
     @Produces(MediaType.APPLICATION_JSON)
@@ -97,52 +123,21 @@ public class HighscoreController {
 
     }
 
-    public static void updatePOB(int Score, String Difficulty) {
-        try {
-            int POB = 11;
-            boolean scoreFlag = false;
-            while (scoreFlag == false) {
-                POB = POB -1;
-                if (isScoreLower(Score, Difficulty, POB) == true) {
-                    PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET positionOnBoard = positionOnBoard + 1 WHERE PositionOnBoard = ? -1 AND Difficulty = ?");
-                    ps.setInt(1, POB);
-                    ps.setString(2, Difficulty);
-
-
-                    ps.executeUpdate();
-                } else {
-                    scoreFlag = true;
-                }
+    public static void updatePOB(String Difficulty) {
+        for (int POBcount = 10; POBcount > 0; POBcount--) {
+            try {
+                        PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET positionOnBoard = ? WHERE Score = (SELECT MAX(Score) FROM HighScores WHERE Difficulty = ? AND PositionOnBoard <= ?) AND Difficulty = ?");
+                        ps.setInt(1, POBcount);
+                        ps.setString(2, Difficulty);
+                        ps.setInt(3, POBcount);
+                        ps.setString(4, Difficulty);
+                        ps.executeUpdate();
+            } catch (Exception exception) {
+                System.out.println("Database error: " + exception.getMessage());
             }
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
         }
     }
 
 
-    public static boolean isScoreLower(int userscore, String userDifficulty, int POB) {
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT score FROM HighScores WHERE positionOnBoard =  ? - 1 AND Difficulty = ?");
-            ps.setInt(1, POB);
-            ps.setString(2, userDifficulty);
-            ResultSet results = ps.executeQuery();
-
-            while (results.next()) {
-
-                int Score = results.getInt(5);
-                if (Score >= userscore) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-
-        }
-        return false;
-    }
 
 }

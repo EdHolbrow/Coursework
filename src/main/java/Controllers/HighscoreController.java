@@ -9,6 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 @Path("Highscores")
 public class HighscoreController {
 
@@ -123,10 +124,21 @@ public class HighscoreController {
 
     }
 
+    public static void ClearPoB(String difficultySelected) {
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET PositionOnBoard = 1 WHERE Difficulty = ?");
+            ps.setString(1, difficultySelected);
+            ps.executeUpdate();
+            System.out.println("Update successful");
+        }  catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+        }
+    }
+
     public static void updatePOB(String Difficulty) {
         for (int POBcount = 10; POBcount > 0; POBcount--) {
             try {
-                        PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET positionOnBoard = ? WHERE Score = (SELECT MAX(Score) FROM HighScores WHERE Difficulty = ? AND PositionOnBoard <= ?) AND Difficulty = ?");
+                        PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET PositionOnBoard = ? WHERE Score = (SELECT MAX(Score) FROM HighScores WHERE Difficulty = ? AND PositionOnBoard < ? LIMIT 1) AND Difficulty = ?");
                         ps.setInt(1, POBcount);
                         ps.setString(2, Difficulty);
                         ps.setInt(3, POBcount);
@@ -138,6 +150,24 @@ public class HighscoreController {
         }
     }
 
+    public static void selectDifficultyTestV(String difficultySelected) {
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores WHERE Difficulty = ? ");
+            ps.setString(1, difficultySelected);
+            ResultSet results = ps.executeQuery();
 
+            while (results.next()) {
+                int HighScoreID = results.getInt(1);
+                String PlayerName = results.getString(2);
+                String Difficulty = results.getString(3);
+                int PositionOnBoard = results.getInt(4);
+                int Score = results.getInt(5);
+                int UserID = results.getInt(6);
+                System.out.println(HighScoreID + " " + PlayerName + " " + Difficulty + " " + PositionOnBoard + " " + Score + " " + UserID);
+            }
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+        }
+    }
 
 }

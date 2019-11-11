@@ -34,8 +34,7 @@ public class Main {
             server.join();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        closeDatabase();
+        }        closeDatabase();
     }
 
     //  HighscoreController.updateScore(11, "Greg", "Easy", 1);

@@ -19,7 +19,7 @@ public class UserController {
     public String insertUser(
             @FormDataParam("UserID") Integer UserID, @FormDataParam("UserName") String UserName, @FormDataParam("BestScore") Integer BestScore, @FormDataParam("Password") String Password) throws Exception {
         if (passwordcheck(Password)) {
-            if (UserID == null || UserName == null || BestScore == null ) {
+            if (UserID == null || UserName == null || BestScore == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
             try {
@@ -68,6 +68,7 @@ public class UserController {
 
         }
     }
+
     @GET
     @Path("selectAllUsers")
     @Produces(MediaType.APPLICATION_JSON)
@@ -79,11 +80,11 @@ public class UserController {
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 JSONObject item = new JSONObject();
-                item.put("UserID",results.getString(1));
+                item.put("UserID", results.getString(1));
                 item.put("Name", results.getString(2));
                 item.put("BestScore", results.getInt(3));
                 item.put("Password", results.getString(4));
-              }
+            }
             return list.toString();
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
@@ -129,5 +130,22 @@ public class UserController {
             return "{\"error\": \"Unable to delete item, please see server console for more info.\"}";
 
         }
+    }
+
+    public static boolean PasswordCheck(String nameEntered, String passwordEntered) {
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Users WHERE Name = ? AND Password =?");
+            ResultSet results = ps.executeQuery();
+            while (results.next()) {
+                int UserID = results.getInt(1);
+                String Name = results.getString(2);
+                int BestScore = results.getInt(3);
+                String Password = results.getString(4);
+                return true;
+            }
+        } catch (Exception exception) {
+return false;
+        }
+        return false;
     }
 }

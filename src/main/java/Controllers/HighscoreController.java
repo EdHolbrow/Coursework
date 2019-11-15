@@ -40,10 +40,10 @@ public class HighscoreController {
 
         }
     }
-    @GET
+    @POST
     @Path("selectDifficulty")
     @Produces(MediaType.APPLICATION_JSON)
-    public String selectDifficulty(@FormDataParam("difficultySelected") String difficultySelected) {
+    public String selectDifficulty(@FormDataParam("Difficulty") String difficultySelected) {
         System.out.println("/Highscores/selectDifficulty");
         JSONArray list = new JSONArray();
         try {

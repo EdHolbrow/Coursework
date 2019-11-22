@@ -17,15 +17,15 @@ public class UserController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String insertUser(
-            @FormDataParam("UserID") Integer UserID, @FormDataParam("UserName") String UserName, @FormDataParam("BestScore") Integer BestScore, @FormDataParam("Password") String Password) throws Exception {
+            @FormDataParam("UserID") Integer UserID, @FormDataParam("Name") String Name, @FormDataParam("BestScore") Integer BestScore, @FormDataParam("Password") String Password) throws Exception {
         if (passwordcheck(Password)) {
-            if (UserID == null || UserName == null || BestScore == null) {
+            if (UserID == null || Name == null || BestScore == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
             try {
-                PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserID, UserName, BestScore, Password) VALUES (?, ?, ?, ?)");
+                PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserID, Name, BestScore, Password) VALUES (?, ?, ?, ?)");
                 ps.setInt(1, UserID);
-                ps.setString(2, UserName);
+                ps.setString(2, Name);
                 ps.setInt(3, BestScore);
                 ps.setString(4, Password);
                 ps.executeUpdate();
@@ -39,35 +39,33 @@ public class UserController {
             return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
         }
     }
-
-    @GET
-    @Path("get/{id}")
+    @POST
+    @Path("selectUser")
     @Produces(MediaType.APPLICATION_JSON)
-    public String selectUser(@PathParam("id") Integer id) throws Exception {
-        if (id == null) {
-            throw new Exception("User's 'id' is missing in the HTTP request's URL.");
-        }
-        System.out.println("thing/get/" + id);
-        JSONObject item = new JSONObject();
+    public String selectDifficulty(@FormDataParam("UserID") String IDSelected) {
+        System.out.println("/Users/SelectUser");
+        JSONArray list = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Users WHERE UserID = ? ");
-            ps.setInt(1, id);
+            if (IDSelected == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            PreparedStatement ps = Main.db.prepareStatement("SELECT UserID , Name, BestScore FROM Users WHERE UserID = ? ");
+            ps.setString(1, IDSelected);
             ResultSet results = ps.executeQuery();
-
-            if (results.next()) {
-                item.put("UserID", id);
+            while (results.next()) {
+                JSONObject item = new JSONObject();
+                item.put("UserID", results.getInt(1));
                 item.put("Name", results.getString(2));
                 item.put("BestScore", results.getInt(3));
-                item.put("Password", results.getString(4));
-
+                list.add(item);
             }
-            return item.toString();
+            return list.toString();
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
-            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
-
+            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
         }
     }
+
 
     @GET
     @Path("selectAllUsers")
@@ -76,14 +74,14 @@ public class UserController {
         System.out.println("users/selectAllUsers");
         JSONArray list = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Users ");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT UserID , Name, BestScore FROM Users ");
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 JSONObject item = new JSONObject();
                 item.put("UserID", results.getString(1));
                 item.put("Name", results.getString(2));
                 item.put("BestScore", results.getInt(3));
-                item.put("Password", results.getString(4));
+                list.add(item);
             }
             return list.toString();
         } catch (Exception exception) {

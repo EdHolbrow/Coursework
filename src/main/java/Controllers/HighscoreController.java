@@ -20,17 +20,17 @@ public class HighscoreController {
         System.out.println("Highscores/selectAll");
         JSONArray list = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores");
             ResultSet results = ps.executeQuery();
             while (results.next()) {
 
                 JSONObject item = new JSONObject();
-                item.put("HighscoreID", results.getInt(1));
-                item.put("PlayerName", results.getString(2));
-                item.put("Difficulty", results.getString(3));
-                item.put("PositionOnBoard", results.getInt(4));
-                item.put( "Score", results.getInt(5));
-                item.put( "UserID", results.getInt(6));
+
+                item.put("PlayerName", results.getString(1));
+                item.put("Difficulty", results.getString(2));
+                item.put("PositionOnBoard", results.getInt(3));
+                item.put( "Score", results.getInt(4));
+                item.put( "UserID", results.getInt(5));
                 list.add(item);
             }
             return list.toString();
@@ -50,17 +50,16 @@ public class HighscoreController {
             if (difficultySelected == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores WHERE Difficulty = ? ");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores WHERE Difficulty = ? ORDER BY PositionOnBoard");
             ps.setString(1, difficultySelected);
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 JSONObject item = new JSONObject();
-                item.put("HighscoreID", results.getInt(1));
-                item.put("PlayerName", results.getString(2));
-                item.put("Difficulty", results.getString(3));
-                item.put("PositionOnBoard", results.getInt(4));
-                item.put( "Score", results.getInt(5));
-                item.put( "UserID", results.getInt(6));
+                item.put("PlayerName", results.getString(1));
+                item.put("Difficulty", results.getString(2));
+                item.put("PositionOnBoard", results.getInt(3));
+                item.put( "Score", results.getInt(4));
+                item.put( "UserID", results.getInt(5));
                 list.add(item);
 
             }
@@ -77,16 +76,16 @@ public class HighscoreController {
         System.out.println("/Highscores/selectTopThree");
         JSONArray list = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM HighScores WHERE PositionOnBoard < 4 ");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores WHERE PositionOnBoard < 4 ");
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 JSONObject item = new JSONObject();
-                item.put("HighscoreID", results.getInt(1));
-                item.put("PlayerName", results.getString(2));
-                item.put("Difficulty", results.getString(3));
-                item.put("PositionOnBoard", results.getInt(4));
-                item.put( "Score", results.getInt(5));
-                item.put( "UserID", results.getInt(6));
+
+                item.put("PlayerName", results.getString(1));
+                item.put("Difficulty", results.getString(2));
+                item.put("PositionOnBoard", results.getInt(3));
+                item.put( "Score", results.getInt(4));
+                item.put( "UserID", results.getInt(5));
                 list.add(item);
             }
             return list.toString();
@@ -111,17 +110,13 @@ public class HighscoreController {
             ps.setInt(2, Score);
             ps.setInt(3, UserID);
             ps.setString(4, Difficulty);
-
-
             ps.execute();
+            ClearPoB(Difficulty);
                 return "{\"status\": \"OK\"}";
-
-
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
                 return "{\"error\": \"Unable to update item, please see server console for more info.\"}";
             }
-
     }
 
     public static void ClearPoB(String difficultySelected) {
@@ -130,6 +125,7 @@ public class HighscoreController {
             ps.setString(1, difficultySelected);
             ps.executeUpdate();
             System.out.println("Update successful");
+            updatePOB(difficultySelected);
         }  catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -144,6 +140,7 @@ public class HighscoreController {
                         ps.setInt(3, POBcount);
                         ps.setString(4, Difficulty);
                         ps.executeUpdate();
+                System.out.println("Update successful");
             } catch (Exception exception) {
                 System.out.println("Database error: " + exception.getMessage());
             }

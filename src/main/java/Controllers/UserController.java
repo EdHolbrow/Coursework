@@ -9,6 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 @Path("Users")
 public class UserController {
 
@@ -39,6 +40,7 @@ public class UserController {
             return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
         }
     }
+
     @POST
     @Path("selectUser")
     @Produces(MediaType.APPLICATION_JSON)
@@ -62,7 +64,7 @@ public class UserController {
             return list.toString();
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
-            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
+            return "{\"error\": \"Unable to list item, please see server console for more info.\"}";
         }
     }
 
@@ -112,37 +114,49 @@ public class UserController {
     @Path("deleteUser")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteUser(@FormDataParam("UserId") Integer UserID) {
-        try {
-            if (UserID == null) {
-                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+    public String deleteUser(@FormDataParam("UserId") Integer UserID, @FormDataParam("Name") String Name, @FormDataParam("Password") String Password) {
+        if (PasswordValidation(UserID, Name, Password)) {
+            try {
+                /*if (UserID == null) {
+                    throw new Exception("One or more form data parameters are missing in the HTTP request.");
+                }*/
+                System.out.println("Users/deleteUser id=" + UserID);
+
+                PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE UserID = ?");
+                ps.setInt(1, UserID);
+                ps.executeUpdate();
+                return "{\"status\": \"OK\"}";
+            } catch (Exception exception) {
+                System.out.println("Database error: " + exception.getMessage());
+                return "{\"error\": \"Unable to delete item, please see server console for more info.\"}";
+
             }
-            System.out.println("Users/deleteUser id=" + UserID);
-
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE UserID = ?");
-            ps.setInt(1, UserID);
-            ps.executeUpdate();
-            return "{\"status\": \"OK\"}";
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
+        } else {
+            System.out.println("Validation error: password is not correct, please try a different password");
             return "{\"error\": \"Unable to delete item, please see server console for more info.\"}";
-
         }
     }
 
-    public static boolean PasswordCheck(String nameEntered, String passwordEntered) {
+    public static boolean PasswordValidation(int IDEntered, String nameEntered, String passwordEntered) {
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Users WHERE Name = ? AND Password =?");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Users WHERE Name = ? AND Password =? AND UserID = ?");
+            ps.setString(1, nameEntered);
+            ps.setString(2, passwordEntered);
+            ps.setInt(3, IDEntered);
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                int UserID = results.getInt(1);
-                String Name = results.getString(2);
-                int BestScore = results.getInt(3);
-                String Password = results.getString(4);
-                return true;
+                int UserID = results.getInt("UserID");
+                String Name = results.getString("Name");
+                int BestScore = results.getInt("BestScore");
+                String Password = results.getString("Password");
+                if(results.getInt("UserID")==IDEntered){
+                    System.out.println(results.getInt("UserID")==IDEntered);
+                    return true;
+                }
             }
+
         } catch (Exception exception) {
-return false;
+            return false;
         }
         return false;
     }

@@ -114,12 +114,12 @@ public class UserController {
     @Path("deleteUser")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteUser(@FormDataParam("UserId") Integer UserID, @FormDataParam("Name") String Name, @FormDataParam("Password") String Password) {
+    public String deleteUser(@FormDataParam("UserID") Integer UserID, @FormDataParam("Name") String Name, @FormDataParam("Password") String Password) {
         if (PasswordValidation(UserID, Name, Password)) {
             try {
-                /*if (UserID == null) {
+                if (UserID == null) {
                     throw new Exception("One or more form data parameters are missing in the HTTP request.");
-                }*/
+                }
                 System.out.println("Users/deleteUser id=" + UserID);
 
                 PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE UserID = ?");
@@ -160,4 +160,17 @@ public class UserController {
         }
         return false;
     }
+
+    public static void UserReplace(int UserID, String Name){
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET PlayerName = 'Guest' AND UserID = 0 WHERE UserID = ? AND Difficulty = ?");
+            ps.setInt(1, UserID);
+            ps.setString(2, Name);
+            ps.executeUpdate();
+            System.out.println("Update successful");
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+        }
+    }
+
 }

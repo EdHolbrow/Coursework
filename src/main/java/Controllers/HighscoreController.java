@@ -20,7 +20,7 @@ public class HighscoreController {
         System.out.println("Highscores/selectAll");
         JSONArray list = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores ORDER BY PositionOnBoard");
             ResultSet results = ps.executeQuery();
             while (results.next()) {
 
@@ -76,7 +76,7 @@ public class HighscoreController {
         System.out.println("/Highscores/selectTopThree");
         JSONArray list = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores WHERE PositionOnBoard < 4 ");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores WHERE PositionOnBoard < 4 ORDER BY PositionOnBoard");
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 JSONObject item = new JSONObject();
@@ -99,7 +99,7 @@ public class HighscoreController {
     @Path("updateScores")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String  updateScore(@FormDataParam("Name") String PlayerName,@FormDataParam("Difficulty") String Difficulty, @FormDataParam("Score") Integer Score,@FormDataParam("UserID") Integer UserID) {
+    public String  updateScore(@FormDataParam("Name") String PlayerName, @FormDataParam("Difficulty") String Difficulty, @FormDataParam("Score") Integer Score,@FormDataParam("UserID") Integer UserID) {
             try {
                 if (PlayerName == null || Score == null || Difficulty == null|| UserID == null) {
                     throw new Exception("One or more form data parameters are missing in the HTTP request.");

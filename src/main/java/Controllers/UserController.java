@@ -44,8 +44,8 @@ public class UserController {
     @POST
     @Path("selectUser")
     @Produces(MediaType.APPLICATION_JSON)
-    public String selectDifficulty(@FormDataParam("UserID") String IDSelected) {
-        System.out.println("/Users/SelectUser");
+    public String selectUser(@FormDataParam("UserID") String IDSelected) {
+        System.out.println("/Users/selectUser");
         JSONArray list = new JSONArray();
         try {
             if (IDSelected == null) {
@@ -149,8 +149,8 @@ public class UserController {
                 String Name = results.getString("Name");
                 int BestScore = results.getInt("BestScore");
                 String Password = results.getString("Password");
-                if(results.getInt("UserID")==IDEntered){
-                    System.out.println(results.getInt("UserID")==IDEntered);
+                if (results.getInt("UserID") == IDEntered) {
+                    System.out.println(results.getInt("UserID") == IDEntered);
                     return true;
                 }
             }
@@ -161,7 +161,7 @@ public class UserController {
         return false;
     }
 
-    public static void UserReplace(int UserID, String Name){
+    public static void UserReplace(int UserID, String Name) {
         try {
             PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET PlayerName = 'Guest' AND UserID = 0 WHERE UserID = ? AND Difficulty = ?");
             ps.setInt(1, UserID);
@@ -173,4 +173,36 @@ public class UserController {
         }
     }
 
+
+
+    @POST
+    @Path("credentialCheck")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String credentialCheck(@FormDataParam("Name") String LoginName, @FormDataParam("Password") String LoginPassword) {
+        System.out.println("/Users/credentialCheck");
+
+        try {
+            if (LoginName == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE Name = ? ");
+            ps.setString(1, LoginName);
+            ResultSet results = ps.executeQuery();
+            if (results.next()) {
+                String CorrectPassword = results.getString(1);
+                if (LoginPassword.equals(CorrectPassword)) {
+                    JSONObject currentUser = new JSONObject();
+                    currentUser.put("Name", LoginName);
+                    return currentUser.toString();
+                } else {
+                return "{\"error\": \"Incorrect password!\"}";
+            }
+        } else {
+            return "{\"error\": \"Unknown user!\"}";
+        }
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to list item, please see server console for more info.\"}";
+        }
+    }
 }

@@ -20,50 +20,8 @@
 
 <div id="startScreen">
 
-    <h2>Read the rules? or ready to play?</h2>
-    <button onclick="showRules()">Rules</button>
-    <button onclick='showPlayOptions();'>Play</button>
-    <button onclick='showLeaderboard();'>Leaderboard</button>
-</div>
-
-<div id="selectNumPlayers">
-    <form>
-        <h2>Select the amount of players</h2>
-        <input checked id="r1" name="numPlayers" type="radio"> 1 Player
-        <input id="r2" name="numPlayers" type="radio"> 2 Players
-        <input id="r3" name="numPlayers" type="radio"> 3 Players
-        <input id="r4" name="numPlayers" type="radio"> 4 Players
-        <br>
-    </form>
-
-    <button onclick='selectGame();'>Submit</button>
-</div>
-
-<div id="singlePlayer">
-
-    Put all the HTML etc here for a single player
-
-
-</div>
-<div id="selectDifficulty">
-    <form>
-        <h2>Select the difficulty you would like to play</h2>
-        <input checked id="rEasy" name="difficulty" type="radio"> Easy
-        <input id="rMedium" name="difficulty" type="radio"> Medium
-        <input id="rHard" name="difficulty" type="radio"> Hard
-
-        <br>
-    </form>
 <br>
-    <button onclick='singlePlayer();'>Play</button>
-</div>
-<div id="multiPlayer">
-
-    Put all the HTML etc here for a multiple players
-
-</div>
-<br>
-<div align="line" id="tutorial">
+<div align="line" id="tutorial" class="rules">
     <p>This game is about trying to get the lowest score possible. You get four cards, only two of which you know. <br>
         Each card has a value, numbered cards are worth their value, e.g. 6 of hearts is 6 points. Queens and Jacks  <br>are
         worth 10 points each as well as 10 numbered cards, aces are worth 1 point and Kings and pairs of numbered
@@ -71,11 +29,23 @@
         with the  <br>lowest scoring hand wins, so the aim of the game is to memorise what cards you have in order to
         minimise your score.<br> When playing with one person the amount of turns you get depends on the difficulty
         selected, the harder the difficulty the fewer turns you get. </p>
-    <p></p>
 
+<br><br>
+</div>
+<div class="dropdown">
+    <button onclick="myFunction()" class="dropbtn">Play</button>
+    <div id="gamebuttons" class="dropdown-content">
+        <a href="#">Singleplayer</a>
+        <a href="#">Multiplayer</a>
+    </div>
+
+
+
+    <button class="button">Users</button>
+
+    <button class="button">Leaderboard</button>
 </div>
 
-
-
+</div>
 </body>
 </html>

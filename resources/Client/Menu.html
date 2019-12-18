@@ -2,120 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Memory Card Game</title>
-
-    <script>
-
-        function pageLoad() {
-            //this hides all the elements on the page at the beginning
-            document.getElementById("selectNumPlayers").style.visibility = "hidden";
-            document.getElementById("singlePlayer").style.visibility = "hidden";
-            document.getElementById("multiPlayer").style.visibility = "hidden";
-            document.getElementById("tutorial").style.visibility = "hidden";
-            document.getElementById("selectDifficulty").style.visibility = "hidden";
-        }
-
-        function showRules() {
-            console.log("Show rules clicked");
-            document.getElementById('tutorial').style.visibility = 'visible';
-            document.getElementById("selectNumPlayers").style.visibility = "hidden";
-            document.getElementById("singlePlayer").style.visibility = "hidden";
-            document.getElementById("multiPlayer").style.visibility = "hidden";
-            document.getElementById("selectDifficulty").style.visibility = "hidden";
-        }
+    <title> Memory Card Game</title>
+    <link href="css/Styles.css" rel="stylesheet" type="text/css">
+    <script src="js/Menu.js"></script>
 
 
-        function showPlayOptions() {
-            document.getElementById("selectNumPlayers").style.visibility = 'visible';
-            document.getElementById("tutorial").style.visibility = "hidden";
-            document.getElementById("selectDifficulty").style.visibility = "hidden";
-
-        }
-
-        function showLeaderboard(){
-            openDatabase("CWDatabase1.db");
-        }
-        function selectGame() {
-
-            if (document.getElementById('r1').checked) {
-                document.getElementById("selectNumPlayers").style.visibility = "hidden";
-                var players = document.getElementById("numPlayers");  //your code
-                console.log("Players is " + players);
-                selectDifficulty();
-
-            } else {
-                multiPlayer();
-            }
-        }
-
-        function selectDifficulty() {
-            document.getElementById("selectDifficulty").style.visibility = "visible";
-        }
-
-        function singlePlayer() {
-            alert("User selected single player game");
-            document.getElementById("singlePlayer").hidden = false; //unhide this section
-            //or open a new page, depends on how complex the page is going to get
-        }
-
-        function multiPlayer() {
-            alert("User selected multi player game");  //use console.log in Chrome hit F12 and look at console in developer tools
-            //if you keep using alert() for testing you'll have to remove them all later :-(
-            document.getElementById("multiPlayer").hidden = false;
-        }
-
-        function sortCards(players) {
-            var playerCards1 = [];
-            var playerCards2 = [];
-            var playerCards3 = [];
-            var playerCards4 = [];
-            for (i = 0; i < players; i++) {
-                for (j = 0; j < 4; j++) {
-                    if (i == 0) {
-                        playercards1[j] = getCards()
-                    }
-                }
-            }
-        }
-
-        function getRandomInt(max) {
-            return Math.floor(Math.random() * Math.floor(max));
-        }
-
-        function getCards() {
-            var card;
-            var value;
-            var usedCards = [];
-            var match;
-            for (i = 0; i < usedCards.length; i++) {
-                while (match = false) {
-                    card = getRandomInt(52) + 1;
-                    if (card == usedCards[j]) {
-                        match = true;
-                    } else {
-                        match = false
-                    }
-                }
-                if (card == 13 || card == 26 || card == 39 || card == 52) {
-                    value = "king";
-                } else if (card == 12 || card == 25 || card == 38 || card == 51) {
-                    value = "queen";
-                } else if (card == 11 || card == 24 || card == 37 || card == 50) {
-                    value = "jack";
-                }
-                usedCards[i] = card;
-            }
-            return value
-        }
-    </script>
 
 </head>
 
-<body onload="pageLoad()">
+<body onload="Menu.js.pageLoad()">
+
+<h1>
+    <br>
+    <br>
+    The Memory Game
+</h1>
 
 <div id="startScreen">
 
-    <h1>Read the rules? or ready to play?</h1>
+    <h2>Read the rules? or ready to play?</h2>
     <button onclick="showRules()">Rules</button>
     <button onclick='showPlayOptions();'>Play</button>
     <button onclick='showLeaderboard();'>Leaderboard</button>
@@ -123,11 +28,11 @@
 
 <div id="selectNumPlayers">
     <form>
-        <h1>Select the amount of players</h1>
-        <input type="radio" name="numPlayers" id="r1" checked> 1 Player
-        <input type="radio" name="numPlayers" id="r2"> 2 Players
-        <input type="radio" name="numPlayers" id="r3"> 3 Players
-        <input type="radio" name="numPlayers" id="r4"> 4 Players
+        <h2>Select the amount of players</h2>
+        <input checked id="r1" name="numPlayers" type="radio"> 1 Player
+        <input id="r2" name="numPlayers" type="radio"> 2 Players
+        <input id="r3" name="numPlayers" type="radio"> 3 Players
+        <input id="r4" name="numPlayers" type="radio"> 4 Players
         <br>
     </form>
 
@@ -142,10 +47,10 @@
 </div>
 <div id="selectDifficulty">
     <form>
-        <h1>Select the difficulty you would like to play</h1>
-        <input type="radio" name="difficulty" id="rEasy" checked> Easy
-        <input type="radio" name="difficulty" id="rMedium"> Medium
-        <input type="radio" name="difficulty" id="rHard"> Hard
+        <h2>Select the difficulty you would like to play</h2>
+        <input checked id="rEasy" name="difficulty" type="radio"> Easy
+        <input id="rMedium" name="difficulty" type="radio"> Medium
+        <input id="rHard" name="difficulty" type="radio"> Hard
 
         <br>
     </form>
@@ -157,18 +62,19 @@
     Put all the HTML etc here for a multiple players
 
 </div>
-
-<div id="tutorial" align="center">
+<br>
+<div align="line" id="tutorial">
     <p>This game is about trying to get the lowest score possible. You get four cards, only two of which you know. <br>
-        Each card has a value, numbered cards are worth their value, e.g. 6 of hearts is 6 points. Queens and Jacks are
-        <br> worth 10 points each as well as 10 numbered cards, aces are worth 1 point and Kings and pairs of numbered
-        <br> cards are worth 0 points; e.g. a pair of 2s is worth 0 points. <br> <br> At the end of the round the player
-        with the lowest scoring hand wins, so the aim of the game is to memorise what cards you have in order to
+        Each card has a value, numbered cards are worth their value, e.g. 6 of hearts is 6 points. Queens and Jacks  <br>are
+        worth 10 points each as well as 10 numbered cards, aces are worth 1 point and Kings and pairs of numbered
+        <br>cards are worth 0 points; e.g. a pair of 2s is worth 0 points. At the end of the round the player
+        with the  <br>lowest scoring hand wins, so the aim of the game is to memorise what cards you have in order to
         minimise your score.<br> When playing with one person the amount of turns you get depends on the difficulty
         selected, the harder the difficulty the fewer turns you get. </p>
     <p></p>
 
 </div>
+
 
 
 </body>

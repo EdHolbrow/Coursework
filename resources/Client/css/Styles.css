@@ -25,6 +25,7 @@ p {
     padding: 16px;
     font-size: 16px;
     border: none;
+    margin: 5px;
 }
 .dropbtn {
     background-color: #cfe2f3;

@@ -20,7 +20,7 @@ public class HighscoreController {
         System.out.println("Highscores/selectAll");
         JSONArray list = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores ORDER BY PositionOnBoard");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores ");
             ResultSet results = ps.executeQuery();
             while (results.next()) {
 

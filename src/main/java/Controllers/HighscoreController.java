@@ -13,32 +13,45 @@ import java.sql.ResultSet;
 @Path("Highscores")
 public class HighscoreController {
 
-    @GET
+    @POST
     @Path("selectAll")
     @Produces(MediaType.APPLICATION_JSON)
     public String  selectAllScores() {
+        String difficultySelected = "";
         System.out.println("Highscores/selectAll");
         JSONArray list = new JSONArray();
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores ");
-            ResultSet results = ps.executeQuery();
-            while (results.next()) {
 
-                JSONObject item = new JSONObject();
+            for(int i = 0; i< 2; i++) {
+                try {
+                if(i==0){
+                    difficultySelected = "Easy";
+                } else if(i==1){
+                    difficultySelected = "Medium";
+                } else if(i==2){
+                    difficultySelected = "Hard";
+                }
+                PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores WHERE Difficulty = ? ORDER BY PositionOnBoard");
+                ps.setString(1, difficultySelected);
+                ResultSet results = ps.executeQuery();
+                while (results.next()){
 
-                item.put("PlayerName", results.getString(1));
-                item.put("Difficulty", results.getString(2));
-                item.put("PositionOnBoard", results.getInt(3));
-                item.put( "Score", results.getInt(4));
-                item.put( "UserID", results.getInt(5));
-                list.add(item);
-            }
-            return list.toString();
-        } catch (Exception exception) {
+                    JSONObject item = new JSONObject();
+
+                    item.put("PlayerName", results.getString(1));
+                    item.put("Difficulty", results.getString(2));
+                    item.put("PositionOnBoard", results.getInt(3));
+                    item.put("Score", results.getInt(4));
+                    item.put("UserID", results.getInt(5));
+                    list.add(item);
+                }
+                return list.toString();
+            } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
             return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
 
         }
+    }
+            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
     }
     @POST
     @Path("selectDifficulty")

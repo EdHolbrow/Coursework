@@ -81,7 +81,7 @@ public class UserController {
             while (results.next()) {
                 JSONObject item = new JSONObject();
                 item.put("UserID", results.getString(1));
-                item.put("Name", results.getString(2));
+                item.put("PlayerName", results.getString(2));
                 item.put("BestScore", results.getInt(3));
                 list.add(item);
             }

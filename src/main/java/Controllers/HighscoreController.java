@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 @Path("Highscores")
 public class HighscoreController {
 
-    @POST
+    @GET
     @Path("selectAll")
     @Produces(MediaType.APPLICATION_JSON)
     public String  selectAllScores() {
@@ -21,7 +21,7 @@ public class HighscoreController {
         System.out.println("Highscores/selectAll");
         JSONArray list = new JSONArray();
 
-            for(int i = 0; i< 2; i++) {
+            for(int i = 0; i< 3; i++) {
                 try {
                 if(i==0){
                     difficultySelected = "Easy";
@@ -44,14 +44,14 @@ public class HighscoreController {
                     item.put("UserID", results.getInt(5));
                     list.add(item);
                 }
-                return list.toString();
+
             } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
             return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
 
         }
     }
-            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
+        return list.toString();
     }
     @POST
     @Path("selectDifficulty")

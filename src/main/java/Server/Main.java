@@ -34,18 +34,10 @@ public class Main {
             server.join();
         } catch (Exception e) {
             e.printStackTrace();
-        }        closeDatabase();
+        }
+        //this closes the database
+        closeDatabase();
     }
-
-    //  HighscoreController.updateScore(11, "Greg", "Easy", 1);
-
-//HighscoreController.selectDifficulty("Easy");
-    //Controllers.HighscoreController.selectDatabase();
-    //Controllers.HighscoreController.insertDatabase();
-    // Controllers.HighscoreController.updateDatabase(PlayerName, Difficulty, PositionOnBoard, score, UserID);
-    // Controllers.UserController.deleteDatabase(5);
-    //this closes the database
-
 
     private static void openDatabase(String dbFile) {
         try {

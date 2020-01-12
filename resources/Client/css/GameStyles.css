@@ -1,0 +1,43 @@
+{box-sizing: border-box;}
+h1 {
+    background-color:#cfe2f3;
+
+}
+div>table{
+    display: inline-block;
+    float: left;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+    opacity: 1;
+}
+.button{
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+}
+.guestbtn{
+    background-color: red;
+}
+#decktable{
+    position: absolute;
+    right: 200px;
+    bottom: 300px;
+    padding: 15px;
+}
+#playcards{
+    position: absolute;
+    left: 150px;
+    bottom: 200px;
+}
+#playbuttondiv{
+    text-align: center;
+}
+#playbutton{
+    position: absolute;
+    top: 50%;
+}
+#timer{
+    text-align: center;
+}

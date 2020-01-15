@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Singleplayer</title>
+    <script src="/client/js/Singleplayer.js"></script>
+    <link href="css/GameStyles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body onload ="openForm()">
+<h1>Singleplayer Setup</h1>
+<div  id="myForm" align = "center">
+    <form action = "SingleplayerGame.html">
+        <h2>Login</h2>
+
+        <label><b>Name</b></label>
+        <input type="text" placeholder="Enter Player Name" id = "playername" name="name" />
+
+        <label><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" id = "passwrd" name="password" />
+
+        <form>
+            <p>Select your difficulty</p><br>
+            <input type = "radio" id = "difficultyEasy" name = "difficulty"/>Easy<br>
+            <input type = "radio" id = "difficultyMedium" name = "difficulty"/>Medium<br>
+            <input type = "radio" id = "difficultyHard" name = "difficulty" />Hard
+        </form>
+        <button type="submit" onclick="checkNull()">Login</button>
+        <button type="submit" class="guestbtn" onclick="setGuest()">Play as guest</button>
+        <br>
+
+    </form>
+</div>
+
+</body>
+</html>

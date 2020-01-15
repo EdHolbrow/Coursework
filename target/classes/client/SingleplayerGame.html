@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SinglePlayerGame</title>
+    <link href="css/GameStyles.css" rel="stylesheet" type="text/css">
+    <script src="/client/js/SingleplayerGame.js"></script>
+</head>
+<body onload ="gameSetup()">
+<br>
+<br>
+<h1>Let's play!</h1>
+<div>
+    <table id = "playcards">
+        <tr>
+    <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card1" height="286" width="218"></td>
+    <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card2" height="286" width="218"></td>
+        </tr><tr>
+    <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card3" height="286" width="218"></td>
+    <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card4" height="286" width="218"></td>
+        </tr>
+    </table>
+</div>
+<div id="playbuttondiv">
+    <button type="button" id = "playbutton" onclick=startGame()>Play</button>
+</div>
+<div>
+    <table id = "decktable"  >
+        <tr>
+            <td colspan="2"><p  id = "timer" >PlaceHolder</p></td>
+        </tr>
+<tr>
+    <td><img src="img/Card%20Back.png" alt = "CardBack" id = "deck" height="286" width="218"></td>
+    <td><img src="img/DiscardPile.PNG" alt = "CardBack" id = "discard" height="286" width="218"></td>
+</tr><tr>
+
+<td>            <button type="button"onclick="gameSetup()" >How to Play</button></td>
+        <td>   <button type="button" >Quit Game</button></td>
+
+    </tr>
+    </table>
+</div>
+</body>
+</html>

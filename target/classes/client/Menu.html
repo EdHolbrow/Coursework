@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Memory Card Game</title>
+    <link href="css/Styles.css" rel="stylesheet" type="text/css">
+    <script src="/client/js/Menu.js"></script>
+
+
+
+</head>
+
+<body onload="Menu.js.pageLoad()">
+
+<h1>
+    <br>
+    <br>
+    The Memory Game
+</h1>
+
+<div id="startScreen">
+
+<br>
+<div align="line" id="tutorial" class="rules">
+    <p>This game is about trying to get the lowest score possible. You get four cards, only two of which you know. <br>
+        Each card has a value, numbered cards are worth their value, e.g. 6 of hearts is 6 points. Queens and Jacks  <br>are
+        worth 10 points each as well as 10 numbered cards, aces are worth 1 point and Kings and pairs of numbered
+        <br>cards are worth 0 points; e.g. a pair of 2s is worth 0 points. At the end of the round the player
+        with the  <br>lowest scoring hand wins, so the aim of the game is to memorise what cards you have in order to
+        minimise your score.<br> When playing with one person the amount of turns you get depends on the difficulty
+        selected, the harder the difficulty the fewer turns you get. </p>
+
+<br><br>
+</div>
+<div class="dropdown">
+    <button onclick="myFunction()" class="dropbtn">Play</button>
+    <div id="gamebuttons" class="dropdown-content">
+        <a onclick="window.location.href='/client/Singleplayer.html'">Singleplayer</a>
+        <a onclick="window.location.href='/client/Multiplayer.html'">Multiplayer</a>
+    </div>
+
+</div>
+
+    <button class="button" onclick="window.location.href='/client/UserList.html'">Users</button>
+
+    <button class="button" onclick="window.location.href='/client/Scoreboard.html'">Leaderboard</button>
+
+
+</div>
+</body>
+</html>

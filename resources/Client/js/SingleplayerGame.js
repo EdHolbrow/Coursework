@@ -11,6 +11,7 @@ let trueValue4 = 0;
 let cardCount = 0;
 let cardDrawn = false;
 let roundcount = 0;
+
 function gameSetup() {
     let gamedifficulty = localStorage.getItem("GameDifficulty");
 
@@ -100,7 +101,6 @@ function assignToCards(cardArray) {
 }
 
 
-
 function card1Show(cardValue) {
     if (cardValue !== 0) {
         assignCount1 = 1;
@@ -112,7 +112,7 @@ function card1Show(cardValue) {
         trueValue1 = deckCard;
         cardDrawn = false;
         document.getElementById("deck").src = "img/Card%20Back.png";
-        roundcount -=1;
+        roundcount -= 1;
         changeTimer();
     }
 }
@@ -128,7 +128,7 @@ function card2Show(cardValue) {
         trueValue2 = deckCard;
         cardDrawn = false;
         document.getElementById("deck").src = "img/Card%20Back.png";
-        roundcount -=1;
+        roundcount -= 1;
         changeTimer();
     }
 }
@@ -144,7 +144,7 @@ function card3Show(cardValue) {
         trueValue3 = deckCard;
         cardDrawn = false;
         document.getElementById("deck").src = "img/Card%20Back.png";
-        roundcount -=1;
+        roundcount -= 1;
         changeTimer();
 
     }
@@ -161,7 +161,7 @@ function card4Show(cardValue) {
         trueValue4 = deckCard;
         cardDrawn = false;
         document.getElementById("deck").src = "img/Card%20Back.png";
-        roundcount -=1;
+        roundcount -= 1;
         changeTimer();
     }
 }
@@ -172,7 +172,6 @@ function hideCards() {
     document.getElementById("card3").src = "img/Card%20Back.png";
     document.getElementById("card4").src = "img/Card%20Back.png";
 }
-
 
 
 function drawCard() {
@@ -189,24 +188,150 @@ function discardCard() {
         cardDrawn = false;
         changeCard(deckCard, 6);
         document.getElementById("deck").src = "img/Card%20Back.png";
-        roundcount -=1;
+        roundcount -= 1;
         changeTimer();
     }
 }
 
-function changeTimer(){
-    if(roundcount === 0){
+function changeTimer() {
+    if (roundcount === 0) {
         document.getElementById("timer").textContent = "Finished!";
         endgame();
-    } else if(roundcount === 1){
+    } else if (roundcount === 1) {
         document.getElementById("timer").textContent = "Last turn!";
-    }else{
+    } else {
         document.getElementById("timer").textContent = roundcount + " rounds left!";
     }
 }
 
-function endgame(){
+function endgame() {
     let score = 0;
+    let cardsScored = 0;
+
+
+    switch (calcKings()) {
+        case 1:
+            cardsScored = 1;
+            break;
+        case 2:
+            cardsScored = 2;
+            break;
+        case 3:
+            cardsScored = 3;
+            break;
+        case 4:
+            cardsScored = 4;
+            showCards(score);
+            break;
+    }
+
+    if (findPairs(cardsScored) === 1) {
+        cardsScored += 2;
+    } else if (findPairs(cardsScored) === 2) {
+        cardsScored = 4;
+        showCards(score);
+    }
+    if (cardsScored === 4){
+        showCards(score);
+    }
+    score += findJQs(cardsScored)
+
+
+}
+
+function calcKings() {
+    let kingCount = 0;
+    if (trueValue1 === 13 || trueValue1 === 26 || trueValue1 === 39 || trueValue1 === 52) {
+        kingCount += 1;
+    } else if (trueValue2 === 13 || trueValue2 === 26 || trueValue2 === 39 || trueValue2 === 52) {
+        kingCount += 1;
+    } else if (trueValue3 === 13 || trueValue3 === 26 || trueValue3 === 39 || trueValue3 === 52) {
+        kingCount += 1;
+    } else if (trueValue4 === 13 || trueValue4 === 26 || trueValue4 === 39 || trueValue4 === 52) {
+        kingCount += 1;
+    }
+    return kingCount;
+}
+
+function findPairs(cardsScored) {
+    let cardArray = [trueValue1, trueValue2, trueValue3, trueValue4];
+    let matchArray = [0, 0, 0, 0];
+    let matchCount = 0;
+    if (cardsScored === 3) {
+        return 0;
+    }
+    for (i = 0; i < 2; i++) {
+        if (matchArray[i] === 0) {
+            if (cardArray[i] < 14) {
+                for (x = (i + 1); x < 4; x++) {
+                    for (y = 1; y < 14; y++) {
+                        if (cardArray[i] === y && (cardArray[x] === (y + 13) || cardArray[x] === (y + 26) || cardArray[x] === (y + 39))) {
+                            matchCount += 1;
+                            matchArray[i] = 1;
+                            matchArray[x] = 1;
+                        }
+                    }
+                }
+            } else if (cardArray[i] < 27) {
+                for (x = (i + 1); x < 4; x++) {
+                    for (y = 14; y < 27; y++) {
+                        if (cardArray[i] === y && (cardArray[x] === (y + 13) || cardArray[x] === (y + 26) || cardArray[x] === (y - 13))) {
+                            matchCount += 1;
+                            matchArray[i] = 1;
+                            matchArray[x] = 1;
+                        }
+                    }
+                }
+            } else if (cardArray[i] < 40) {
+                for (x = (i + 1); x < 4; x++) {
+                    for (y = 27; y < 40; y++) {
+                        if (cardArray[i] === y && (cardArray[x] === (y + 13) || cardArray[x] === (y - 13) || cardArray[x] === (y - 26))) {
+                            matchCount += 1;
+                            matchArray[i] = 1;
+                            matchArray[x] = 1;
+                        }
+                    }
+                }
+            } else {
+                for (x = (i + 1); x < 4; x++) {
+                    for (y = 40; y < 53; y++) {
+                        if (cardArray[i] === y && (cardArray[x] === (y - 13) || cardArray[x] === (y - 26) || cardArray[x] === (y - 39))) {
+                            matchCount += 1;
+                            matchArray[i] = 1;
+                            matchArray[x] = 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return matchCount;
+}
+
+function findJQs(cardsScored) {
+    let cardArray = [trueValue1, trueValue2, trueValue3, trueValue4];
+    let jackValue = 0;
+    let queenValue = 0;
+    for(i = 0; i< cardsScored; i++) {
+        switch (cardArray[i]) {
+            case 11:
+            case 24:
+            case 37:
+            case 50:
+                jackValue += 1;
+                break;
+            case 12:
+            case 25:
+            case 38:
+            case 51:
+                queenValue += 1;
+                break;
+        }
+    }
+    return (jackValue + queenValue);
+}
+
+function showCards() {
 
 }
 

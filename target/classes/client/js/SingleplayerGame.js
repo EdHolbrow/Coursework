@@ -11,6 +11,18 @@ let trueValue4 = 0;
 let cardCount = 0;
 let cardDrawn = false;
 let roundcount = 0;
+
+function gotoMenu() {
+    let quitVar = confirm("Are you sure you want to leave?");
+    if (quitVar === true) {
+        window.location.replace(window.location.href='/client/Menu.html');
+    }
+}
+function showHelp(){
+    alert("The aim of the game is to get the lowest score in the amount of rounds you have, each card scores its number," +
+        " a pair of cards scores 0 and so do kings. Whereas jacks and queens score ten each, so try and get pairs and " +
+        "kings to score as low as possible!" + " You can discard cards if you don't want them in your hand.")
+}
 function gameSetup() {
     let gamedifficulty = localStorage.getItem("GameDifficulty");
 
@@ -24,6 +36,7 @@ function gameSetup() {
     }
     document.getElementById("timer").textContent = roundcount + " rounds left!";
     document.getElementById("hidebutton").style.visibility = "hidden";
+    document.getElementById("scoreLabel").style.visibility = "hidden";
 }
 
 function startGame() {
@@ -44,7 +57,7 @@ function getCards(handordeck) {
                 card = getRandomInt(51) + 1;
 
                 if (usedCards.length > 1) {
-                    for (i = 0; i < usedCards.length - 1; i++) {
+                    for (i = 0; i < usedCards.length; i++) {
                         if (card === usedCards[i]) {
                             match = true;
                         } else {
@@ -62,7 +75,7 @@ function getCards(handordeck) {
             card = getRandomInt(51) + 1;
 
             if (usedCards.length > 1) {
-                for (i = 0; i < usedCards.length - 1; i++) {
+                for (i = 0; i < usedCards.length; i++) {
                     if (card === usedCards[i]) {
                         match = true;
                     } else {
@@ -100,7 +113,6 @@ function assignToCards(cardArray) {
 }
 
 
-
 function card1Show(cardValue) {
     if (cardValue !== 0) {
         assignCount1 = 1;
@@ -112,7 +124,7 @@ function card1Show(cardValue) {
         trueValue1 = deckCard;
         cardDrawn = false;
         document.getElementById("deck").src = "img/Card%20Back.png";
-        roundcount -=1;
+        roundcount -= 1;
         changeTimer();
     }
 }
@@ -128,7 +140,7 @@ function card2Show(cardValue) {
         trueValue2 = deckCard;
         cardDrawn = false;
         document.getElementById("deck").src = "img/Card%20Back.png";
-        roundcount -=1;
+        roundcount -= 1;
         changeTimer();
     }
 }
@@ -144,7 +156,7 @@ function card3Show(cardValue) {
         trueValue3 = deckCard;
         cardDrawn = false;
         document.getElementById("deck").src = "img/Card%20Back.png";
-        roundcount -=1;
+        roundcount -= 1;
         changeTimer();
 
     }
@@ -161,7 +173,7 @@ function card4Show(cardValue) {
         trueValue4 = deckCard;
         cardDrawn = false;
         document.getElementById("deck").src = "img/Card%20Back.png";
-        roundcount -=1;
+        roundcount -= 1;
         changeTimer();
     }
 }
@@ -172,7 +184,6 @@ function hideCards() {
     document.getElementById("card3").src = "img/Card%20Back.png";
     document.getElementById("card4").src = "img/Card%20Back.png";
 }
-
 
 
 function drawCard() {
@@ -189,25 +200,170 @@ function discardCard() {
         cardDrawn = false;
         changeCard(deckCard, 6);
         document.getElementById("deck").src = "img/Card%20Back.png";
-        roundcount -=1;
+        roundcount -= 1;
         changeTimer();
     }
 }
 
-function changeTimer(){
-    if(roundcount === 0){
+function changeTimer() {
+    if (roundcount === 0) {
         document.getElementById("timer").textContent = "Finished!";
         endgame();
-    } else if(roundcount === 1){
+    } else if (roundcount === 1) {
         document.getElementById("timer").textContent = "Last turn!";
-    }else{
+    } else {
         document.getElementById("timer").textContent = roundcount + " rounds left!";
     }
 }
 
-function endgame(){
+function endgame() {
     let score = 0;
+    let cardsScored = 0;
+    let cardArray = [trueValue1, trueValue2, trueValue3, trueValue4];
 
+
+    switch (calcKings()) {
+        case 1:
+            cardsScored = 1;
+            break;
+        case 2:
+            cardsScored = 2;
+            break;
+        case 3:
+            cardsScored = 3;
+            break;
+        case 4:
+            cardsScored = 4;
+            showCards(score);
+            break;
+    }
+
+    if (findPairs(cardsScored) === 1) {
+        cardsScored += 2;
+    } else if (findPairs(cardsScored) === 2) {
+        cardsScored = 4;
+        showCards(score);
+    }
+    if (cardsScored === 4){
+        showCards(score);
+    }
+    score += findJQs();
+    if (cardsScored === 4){
+        showCards(score);
+    }
+for(i =0; i<4;i++){
+    if(kingArray[i] ===0 && JQArray[i]===0 && matchArray[i] ===0){
+        score += (cardArray[i] % 13);
+        alert(score);
+    }
+}
+showCards(score);
+}
+let kingArray= [0,0,0,0];
+function calcKings() {
+    let kingCount = 0;
+    let cardArray = [trueValue1, trueValue2, trueValue3, trueValue4];
+
+    for(i = 0;i<4;i++){
+        if (cardArray[i] === 13 || cardArray[i] === 26 || cardArray[i] === 39 || cardArray[i] === 52) {
+            kingCount += 1;
+            kingArray[i] = 1;
+        }
+    }
+    return kingCount;
+}
+
+let matchArray = [0, 0, 0, 0];
+function findPairs(cardsScored) {
+    let cardArray = [trueValue1, trueValue2, trueValue3, trueValue4];
+
+    let matchCount = 0;
+    if (cardsScored === 3) {
+        return 0;
+    }
+    for (i = 0; i < 2; i++) {
+        if (matchArray[i] === 0) {
+            if (cardArray[i] < 14) {
+                for (x = (i + 1); x < 4; x++) {
+                    for (y = 1; y < 14; y++) {
+                        if (cardArray[i] === y && (cardArray[x] === (y + 13) || cardArray[x] === (y + 26) || cardArray[x] === (y + 39))) {
+                            matchCount += 1;
+                            matchArray[i] = 1;
+                            matchArray[x] = 1;
+                        }
+                    }
+                }
+            } else if (cardArray[i] < 27) {
+                for (x = (i + 1); x < 4; x++) {
+                    for (y = 14; y < 27; y++) {
+                        if (cardArray[i] === y && (cardArray[x] === (y + 13) || cardArray[x] === (y + 26) || cardArray[x] === (y - 13))) {
+                            matchCount += 1;
+                            matchArray[i] = 1;
+                            matchArray[x] = 1;
+                        }
+                    }
+                }
+            } else if (cardArray[i] < 40) {
+                for (x = (i + 1); x < 4; x++) {
+                    for (y = 27; y < 40; y++) {
+                        if (cardArray[i] === y && (cardArray[x] === (y + 13) || cardArray[x] === (y - 13) || cardArray[x] === (y - 26))) {
+                            matchCount += 1;
+                            matchArray[i] = 1;
+                            matchArray[x] = 1;
+                        }
+                    }
+                }
+            } else {
+                for (x = (i + 1); x < 4; x++) {
+                    for (y = 40; y < 53; y++) {
+                        if (cardArray[i] === y && (cardArray[x] === (y - 13) || cardArray[x] === (y - 26) || cardArray[x] === (y - 39))) {
+                            matchCount += 1;
+                            matchArray[i] = 1;
+                            matchArray[x] = 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return matchCount;
+}
+
+let JQArray = [0,0,0,0];
+function findJQs() {
+    let cardArray = [trueValue1, trueValue2, trueValue3, trueValue4];
+    let jackValue = 0;
+    let queenValue = 0;
+    for(i = 0; i< 4; i++) {
+        switch (cardArray[i]) {
+            case 11:
+            case 24:
+            case 37:
+            case 50:
+                jackValue += 1;
+                JQArray[i] = 1;
+                break;
+            case 12:
+            case 25:
+            case 38:
+            case 51:
+                queenValue += 1;
+                JQArray[i] = 1;
+                break;
+        }
+    }
+    return (jackValue + queenValue);
+}
+
+function showCards(score) {
+    document.getElementById("scoreLabel").textContent = "Well done! Your total score this game was: " + score;
+    for(i=0;i<4;i++){
+        if(i===0){changeCard(trueValue1, 1)}
+        if(i===1){changeCard(trueValue2, 2)}
+        if(i===2){changeCard(trueValue3, 3)}
+        if(i===3){changeCard(trueValue4, 4)}
+    }
+    document.getElementById("scoreLabel").style.visibility = "visible";
 }
 
 function changeCard(cardValue, cardNum) {

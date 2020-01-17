@@ -108,6 +108,24 @@ public class HighscoreController {
         }
     }
 
+    public static int  ScoreCheck(String difficultySelected){
+
+
+        try{
+        PreparedStatement ps = Main.db.prepareStatement("SELECT  Score FROM HighScores WHERE Difficulty = ? AND PositionOnBoard = 10");
+        ps.setString(1, difficultySelected);
+            ResultSet results = ps.executeQuery();
+            while (results.next()) {
+                return results.getInt(1);
+            }
+
+    } catch(Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return 0;
+        }
+        return 0;
+    }
+
     @POST
     @Path("updateScores")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -117,15 +135,20 @@ public class HighscoreController {
                 if (PlayerName == null || Score == null || Difficulty == null|| UserID == null) {
                     throw new Exception("One or more form data parameters are missing in the HTTP request.");
                 }
+                if(Score >= ScoreCheck(Difficulty)){
+                    System.out.println("Score worse than worst score");
+                    return "";
+                } else {
 
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET PlayerName = ?, Score = ?, UserID = ? WHERE PositionOnBoard = 10 AND Difficulty = ?");
-            ps.setString(1, PlayerName);
-            ps.setInt(2, Score);
-            ps.setInt(3, UserID);
-            ps.setString(4, Difficulty);
-            ps.execute();
-            ClearPoB(Difficulty);
-                return "{\"status\": \"OK\"}";
+                    PreparedStatement ps = Main.db.prepareStatement("UPDATE HighScores SET PlayerName = ?, Score = ?, UserID = ? WHERE PositionOnBoard = 10 AND Difficulty = ?");
+                    ps.setString(1, PlayerName);
+                    ps.setInt(2, Score);
+                    ps.setInt(3, UserID);
+                    ps.setString(4, Difficulty);
+                    ps.execute();
+                    ClearPoB(Difficulty);
+                    return "{\"status\": \"OK\"}";
+                }
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
                 return "{\"error\": \"Unable to update item, please see server console for more info.\"}";

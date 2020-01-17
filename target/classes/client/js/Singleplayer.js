@@ -5,24 +5,46 @@ function openForm() {
 function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }
+
 function setGuest(){
     document.getElementById("playername").value = "Guest";
     document.getElementById("passwrd").value = "password1";
+    document.getElementById("userID").value = 0;
 
 
 }
 function checkNull(){
     let difficulty = "";
     let nullflag = false;
+    let playerName = "";
+    let userID = 0;
+    let password = "";
 
     if(document.getElementById("playername").value === ""){
         nullflag = true;
 
+    } else{
+
+       playerName = document.getElementById("playername").value;
+        localStorage.setItem("playerName", playerName);
     }
+
     if(document.getElementById("passwrd").value === ""){
         nullflag = true;
-
+    } else{
+        password = document.getElementById("passwrd").value;
+        localStorage.setItem("password", password);
     }
+
+    if(document.getElementById("userID").value === null){
+
+        nullflag = true;
+    }else{
+
+        userID = document.getElementById("userID").value;
+        localStorage.setItem("UserID", userID);
+    }
+
     if(document.getElementById("difficultyEasy").checked === false && document.getElementById("difficultyMedium").checked === false && document.getElementById("difficultyHard").checked === false){
         nullflag = true;
 

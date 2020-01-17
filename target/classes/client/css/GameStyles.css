@@ -27,6 +27,9 @@ div>table{
     bottom: 200px;
 }
 #playbuttondiv{
+    position: absolute;
+    left: 750px;
+    bottom: 300px;
     text-align: center;
 }
 #playbutton{

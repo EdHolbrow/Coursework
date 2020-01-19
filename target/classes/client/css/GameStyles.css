@@ -12,8 +12,13 @@ div>table{
 .form-container .btn:hover, .open-button:hover {
     opacity: 1;
 }
-.guestbtn{
+#guestbtn{
     background-color: red;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    margin: 5px;
 }
 #decktable{
     position: absolute;
@@ -46,4 +51,8 @@ div>table{
     font-size: 16px;
     border: none;
     margin: 5px;
+}
+#disclaimer{
+    font-style: italic;
+    font-size: 16px;
 }

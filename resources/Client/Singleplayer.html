@@ -10,7 +10,7 @@
 <body onload ="openForm()">
 <h1>Singleplayer Setup</h1>
 <div  id="myForm" align = "center">
-    <form action = "SingleplayerGame.html">
+    <form>
         <h2>Login</h2>
 
         <label><b>Name</b></label>
@@ -24,9 +24,10 @@
             <input type = "radio" id = "difficultyEasy" name = "difficulty"/>Easy<br>
             <input type = "radio" id = "difficultyMedium" name = "difficulty"/>Medium<br>
             <input type = "radio" id = "difficultyHard" name = "difficulty" />Hard
+            <br>
         </form>
-        <button type="submit" onclick="checkNull()">Login</button>
-        <button type="submit" class="guestbtn" onclick="setGuest()">Play as guest</button>
+        <button type="submit" class="button" onclick="checkNull()">Login</button>
+        <button type="submit" id="guestbtn" onclick="setGuest()">Play as guest</button>
         <br>
 
     </form>

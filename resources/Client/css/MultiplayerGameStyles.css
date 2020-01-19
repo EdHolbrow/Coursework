@@ -1,0 +1,22 @@
+h1 {
+    background-color:#cfe2f3;
+}
+#decktable{
+    position: absolute;
+    right: 200px;
+    bottom: 300px;
+    padding: 15px;
+}
+#playbutton{
+    position: absolute;
+    top: 50%;
+}
+#playbuttondiv{
+    position: absolute;
+    left: 750px;
+    bottom: 300px;
+    text-align: center;
+}
+#timer{
+    text-align: center;
+}

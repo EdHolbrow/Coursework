@@ -25,8 +25,6 @@ function showHelp(){
 }
 function gameSetup() {
     let gamedifficulty = localStorage.getItem("GameDifficulty");
-
-
     if (gamedifficulty === "Easy") {
         roundcount = 8;
     } else if (gamedifficulty === "Medium") {
@@ -183,6 +181,7 @@ function hideCards() {
     document.getElementById("card2").src = "img/Card%20Back.png";
     document.getElementById("card3").src = "img/Card%20Back.png";
     document.getElementById("card4").src = "img/Card%20Back.png";
+    document.getElementById("hidebutton").style.visibility = "hidden";
 }
 
 

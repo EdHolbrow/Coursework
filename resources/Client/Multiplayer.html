@@ -3,8 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Multiplayer</title>
+    <script src="/client/js/MultiplayerSetup.js"></script>
+    <link href="css/GameStyles.css" rel="stylesheet" type="text/css">
+
 </head>
-<body>
+
+<body onload ="openForm()">
+
+<h1>Multiplayer Setup</h1>
+<div  id="myForm" align = "center">
+    <form action = "SingleplayerGame.html">
+        <h2>Game Setup</h2>
+
+        <form>
+            <h3>How many players?</h3><br>
+            <input type = "radio" id = "2player" name = "players"/>2 Players<br>
+            <input type = "radio" id = "3player" name = "players"/>3 Players<br>
+            <input type = "radio" id = "4player" name = "players" />4 Players</form>
+
+<br>
+        <br>
+
+        <form>
+            <h3>Select your difficulty</h3><br>
+            <input type = "radio" id = "difficultyEasy" name = "difficulty"/>Easy<br>
+            <input type = "radio" id = "difficultyMedium" name = "difficulty"/>Medium<br>
+            <input type = "radio" id = "difficultyHard" name = "difficulty" />Hard <br>
+
+        </form>
+
+    <p id = "disclaimer">Note: Scores in the multiplayer game will not be listed on the score board.</p>
+        <button type="submit" class="button" onclick="checkNull()">Play</button>
+
+        <br>
+
+    </form>
+</div>
 
 </body>
 </html>

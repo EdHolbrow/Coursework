@@ -1,15 +1,15 @@
 function pageLoad() {
    createAll();
    createEasy();
-
+document.getElementById("listEasy").style.display = "none";
 }
 function createAll(){
 
     let ScoresHTML = '<table>' +
         '<tr>' +
-        '<th>PlayerName</th>' +
+        '<th>Player Name</th>' +
         '<th>Difficulty</th>' +
-        '<th>PositionOnBoard</th>' +
+        '<th>Position on Board</th>' +
         '<th>Score</th>' +
         '<th class="last">UserID</th>' +
         '</tr>';
@@ -47,11 +47,11 @@ function createEasy() {
         '<th class="last">UserID</th>' +
         '</tr>';
 
-    const form = "Easy";
-    const formData = new FormData(form);
 
 
-    fetch('/Highscores/selectDifficulty', {method: 'post', body: formData}
+
+
+    fetch('/Highscores/selectAll', {method: 'get'}
     ).then(response => response.json()
     ).then(Scores => {
 
@@ -69,21 +69,12 @@ function createEasy() {
         }
         EasyScoresHTML += '</table>';
 
-        document.getElementById("ListEasy").innerHTML = EasyScoresHTML;
+        document.getElementById("listEasy").innerHTML = EasyScoresHTML;
 
     });
 }
-visible = 1; //var that keeps track of which table is visible (1 or 2)
 function listEasy() {
-    t1 = document.getElementById("listScores");
-    t2 = document.getElementById("listEasy");
-    if(visible === 1) {
-        visible = 2;
-        t1.style.display = 'none';
-        t2.style.display = 'block';
-    } else {
-        visible = 1;
-        t1.style.display = 'block';
-        t2.style.display = 'none';
-    }
+    alert("test");
+    document.getElementById("listScores").style.display = "none";
+    document.getElementById("listEasy").style.display = "block";
 }

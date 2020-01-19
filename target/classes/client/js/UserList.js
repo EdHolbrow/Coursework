@@ -8,14 +8,14 @@ function pageLoad() {
         '</tr>';
 
 
-    fetch('/Users/selectAll', {method: 'get'}
+    fetch('/Users/selectAllUsers', {method: 'get'}
     ).then(response => response.json()
     ).then(Users => {
 
         for (let User of Users) {
             UsersHTML += `<tr>` +
                 `<td>${User.UserID}</td>` +
-                `<td>${User.Name}</td>` +
+                `<td>${User.PlayerName}</td>` +
                 `<td>${User.BestScore}</td>` +
                 `<td class="last">` +
                 `</td>` +

@@ -56,7 +56,7 @@ public class HighscoreController {
     @POST
     @Path("selectDifficulty")
     @Produces(MediaType.APPLICATION_JSON)
-    public String selectDifficulty(@FormDataParam("Difficulty") String difficultySelected) {
+    public String selectDifficulty(@FormDataParam("DifficultySelected") String difficultySelected) {
         System.out.println("/Highscores/selectDifficulty");
         JSONArray list = new JSONArray();
         try {
@@ -76,6 +76,7 @@ public class HighscoreController {
                 list.add(item);
 
             }
+            System.out.println(list.toString());
             return list.toString();
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());

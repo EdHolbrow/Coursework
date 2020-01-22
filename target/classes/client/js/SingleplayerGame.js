@@ -12,21 +12,17 @@ let cardCount = 0;
 let cardDrawn = false;
 let roundcount = 0;
 
-//quits the game to go back to the menu
-
 function gotoMenu() {
     let quitVar = confirm("Are you sure you want to leave?");
     if (quitVar === true) {
         window.location.replace(window.location.href='/client/Menu.html');
     }
 }
-//shows the rules
 function showHelp(){
     alert("The aim of the game is to get the lowest score in the amount of rounds you have, each card scores its number," +
         " a pair of cards scores 0 and so do kings. Whereas jacks and queens score ten each, so try and get pairs and " +
         "kings to score as low as possible!" + " You can discard cards if you don't want them in your hand.")
 }
-// sets the timer depending on the difficulty
 function gameSetup() {
     let gamedifficulty = localStorage.getItem("GameDifficulty");
     if (gamedifficulty === "Easy") {
@@ -46,9 +42,6 @@ function startGame() {
     document.getElementById("playbuttondiv").style.visibility = "hidden";
     getCards("hand");
 }
-
-//this function first generates the users cards at the beginning of the game, and then acts as the deck, generating the
-// cards that are pulled from it, whilst making sure that those cards haven't been used
 
 function getCards(handordeck) {
     let card = 0;
@@ -98,7 +91,7 @@ function getCards(handordeck) {
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
-//acts as a pathway to assign the four picked values to each card at the beginning of the game
+
 function assignToCards(cardArray) {
     for (i = 0; i < 4; i++) {
         if (i === 0) {
@@ -116,11 +109,8 @@ function assignToCards(cardArray) {
     }
     confirm("Let's play! Click two cards to see their value - make sure to remember the values!");
 }
-// This function is used to match the cards value to the variable cardValue on the first pass through, as clicking on
-// the card has a value of 0, clicking on the card either shows the cards value at the beginning of the game, or swaps
-// the value will the card pulled from the deck
 
-// there are three more functions here that perform the same purpose of card1Show but for the other three cards
+
 function card1Show(cardValue) {
     if (cardValue !== 0) {
         assignCount1 = 1;
@@ -186,7 +176,6 @@ function card4Show(cardValue) {
     }
 }
 
-//hides the cards when two have been selected at the beginning of the game
 function hideCards() {
     document.getElementById("card1").src = "img/Card%20Back.png";
     document.getElementById("card2").src = "img/Card%20Back.png";
@@ -195,7 +184,7 @@ function hideCards() {
     document.getElementById("hidebutton").style.visibility = "hidden";
 }
 
-//prevents the user from drawing from the deck without the cards being assigned or not discarding or using a card
+
 function drawCard() {
     if (cardDrawn === false) {
         if (assignCount1 === 1 && assignCount2 === 1 && assignCount3 === 1 && assignCount4 === 1) {
@@ -204,7 +193,7 @@ function drawCard() {
         }
     }
 }
-//moves a card from the deck to the discard pile, and allows a user to draw another card from the deck
+
 function discardCard() {
     if (cardDrawn === true) {
         cardDrawn = false;
@@ -215,7 +204,6 @@ function discardCard() {
     }
 }
 
-//decreases the timer by 1 after a round has passed
 function changeTimer() {
     if (roundcount === 0) {
         document.getElementById("timer").textContent = "Finished!";
@@ -226,7 +214,7 @@ function changeTimer() {
         document.getElementById("timer").textContent = roundcount + " rounds left!";
     }
 }
-//calculates the score of the user
+
 function endgame() {
     let score = 0;
     let cardsScored = 0;
@@ -265,11 +253,11 @@ function endgame() {
 for(i =0; i<4;i++){
     if(kingArray[i] ===0 && JQArray[i]===0 && matchArray[i] ===0){
         score += (cardArray[i] % 13);
+        alert(score);
     }
 }
 showCards(score);
 }
-//checks to see if the user has any kings in their hand
 let kingArray= [0,0,0,0];
 function calcKings() {
     let kingCount = 0;
@@ -284,7 +272,6 @@ function calcKings() {
     return kingCount;
 }
 
-//checks to see if the user has any pairs in their hand
 let matchArray = [0, 0, 0, 0];
 function findPairs(cardsScored) {
     let cardArray = [trueValue1, trueValue2, trueValue3, trueValue4];
@@ -341,7 +328,6 @@ function findPairs(cardsScored) {
     return matchCount;
 }
 
-//checks to see if the user has any kings in their hand
 let JQArray = [0,0,0,0];
 function findJQs() {
     let cardArray = [trueValue1, trueValue2, trueValue3, trueValue4];

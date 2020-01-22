@@ -36,9 +36,6 @@ function createAll(){
 }
 function createEasy() {
 
-    let formData = new FormData();
-    formData.append(diffLevel,"Easy");
-
     let EasyScoresHTML = '<table>' +
         '<tr>' +
         '<th>PlayerName</th>' +
@@ -47,10 +44,19 @@ function createEasy() {
         '<th>Score</th>' +
         '<th class="last">UserID</th>' +
         '</tr>';
-    
-    fetch('/Highscores/selectDifficulty', {method: 'post',body: formData}
+
+
+    let formData = new FormData();
+    formData.append("DifficultySelected   ", "Easy");
+
+    console.log(formData);
+
+
+    fetch('/Highscores/selectDifficulty', {method: 'post', body:formData}
     ).then(response => response.json()
     ).then(Scores => {
+
+        console.log(formData);
 
         for (let Score of Scores) {
             EasyScoresHTML += `<tr>` +
@@ -65,11 +71,21 @@ function createEasy() {
 
         }
         EasyScoresHTML += '</table>';
+
         document.getElementById("listEasy").innerHTML = EasyScoresHTML;
+
     });
 }
 function listEasy() {
     alert("test");
     document.getElementById("listScores").style.display = "none";
     document.getElementById("listEasy").style.display = "block";
+}
+
+function getFormDataEasy(json) {
+    let formData = new FormData();
+    for (let key in json) {
+        formData.append(key, json[key]);
+    }
+    return formData;
 }

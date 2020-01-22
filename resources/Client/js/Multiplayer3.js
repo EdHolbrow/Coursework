@@ -14,8 +14,6 @@ let assignCount9 = 0;
 let assignCount10 = 0;
 let assignCount11 = 0;
 let assignCount12 = 0;
-
-
 let showFlag1 = false;
 let showFlag2 = false;
 let showFlag3 = false;
@@ -31,7 +29,6 @@ let trueValue9 = 0;
 let trueValue10 = 0;
 let trueValue11 = 0;
 let trueValue12 = 0;
-
 let gameEnd = false;
 let cardCount1 = 0;
 let cardCount2 = 0;
@@ -42,7 +39,6 @@ let discardCount = 0;
 let firstPlayerFlag = false;
 let secondPlayerFlag = false;
 let thirdPlayerFlag = false;
-
 
 function gotoMenu() {
     let quitVar = confirm("Are you sure you want to leave?");
@@ -71,12 +67,12 @@ function gameSetup() {
 
     document.getElementById("timer").textContent = roundcount + " rounds left!";
 
-    document.getElementById("labels").style.visibility = "hidden";
+
 
     document.getElementById("hidebutton1").style.visibility = "hidden";
     document.getElementById("hidebutton2").style.visibility = "hidden";
     document.getElementById("hidebutton3").style.visibility = "hidden";
-
+    document.getElementById("labels").style.visibility = "hidden";
     document.getElementById("winnerLabel").style.visibility = "hidden";
 }
 

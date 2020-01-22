@@ -1,7 +1,5 @@
 function pageLoad() {
-   createAll();
    createEasy();
-document.getElementById("listEasy").style.display = "none";
 }
 function createAll(){
 
@@ -48,12 +46,17 @@ function createEasy() {
         '</tr>';
 
 
+    let formData = new FormData();
+    formData.append("DifficultySelected   ", "Easy");
+
+    console.log(formData);
 
 
-
-    fetch('/Highscores/selectAll', {method: 'get'}
+    fetch('/Highscores/selectDifficulty', {method: 'post', body:formData}
     ).then(response => response.json()
     ).then(Scores => {
+
+        console.log(formData);
 
         for (let Score of Scores) {
             EasyScoresHTML += `<tr>` +
@@ -77,4 +80,12 @@ function listEasy() {
     alert("test");
     document.getElementById("listScores").style.display = "none";
     document.getElementById("listEasy").style.display = "block";
+}
+
+function getFormDataEasy(json) {
+    let formData = new FormData();
+    for (let key in json) {
+        formData.append(key, json[key]);
+    }
+    return formData;
 }

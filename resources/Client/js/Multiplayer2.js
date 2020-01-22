@@ -347,13 +347,16 @@ modCalc =0;
         if (turnCount === 0) {
             for (x = 0; x < 4; x++) {
                 if (kingArray1[x] === 0 && JQArray1[x] === 0 && matchArray1[x] === 0) {
-                    scores[0] =(cardArray1[x] % 13);
+                    scores[0] +=(cardArray1[x] % 13);
+                    alert(scores[0]);
                 }
             }
         } else if (turnCount === 1) {
             for (x = 0; x < 4; x++) {
                 if (kingArray2[x] === 0 && JQArray2[x] === 0 && matchArray2[x] === 0) {
                     scores[1] += (cardArray2[x] % 13);
+                    alert(scores[1]);
+
 
                 }
             }
@@ -399,7 +402,7 @@ function findPairs(playerSet) {
     let cardArray1 = [trueValue1, trueValue2, trueValue3, trueValue4];
     let cardArray2 = [trueValue5, trueValue6, trueValue7, trueValue8];
     if (playerSet === 0) {
-        for (i = 0; i < 2; i++) {
+        for (i = 0; i < 3; i++) {
             if (matchArray1[i] === 0) {
                 if (cardArray1[i] < 14) {
                     for (x = (i + 1); x < 4; x++) {
@@ -443,7 +446,7 @@ function findPairs(playerSet) {
         }
 
     } else if (playerSet === 1) {
-        for (i = 0; i < 2; i++) {
+        for (i = 0; i < 3; i++) {
             if (matchArray2[i] === 0) {
                 if (cardArray2[i] < 14) {
                     for (x = (i + 1); x < 4; x++) {

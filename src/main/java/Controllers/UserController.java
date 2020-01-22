@@ -68,6 +68,57 @@ public class UserController {
         }
     }
 
+    @POST
+    @Path("selectScore")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String selectScore(@FormDataParam("PlayerName") String PlayerName, @FormDataParam("UserID") Integer IDSelected ) {
+        System.out.println("/Users/selectScore");
+        JSONArray list = new JSONArray();
+        try {
+            if (IDSelected == null || PlayerName == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            PreparedStatement ps = Main.db.prepareStatement("SELECT BestScore FROM Users WHERE Name = ? AND UserID = ? ");
+            ps.setString(1, PlayerName );
+            ps.setInt(2, IDSelected);
+            ResultSet results = ps.executeQuery();
+            while (results.next()) {
+                JSONObject item = new JSONObject();
+
+                item.put("BestScore", results.getInt(1));
+                list.add(item);
+            }
+            return list.toString();
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to list item, please see server console for more info.\"}";
+        }
+    }
+
+    @POST
+    @Path("updateBestScore")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String  updateBestScore(@FormDataParam("PlayerName") String PlayerName, @FormDataParam("UserID") Integer IDSelected, @FormDataParam("BestScore") Integer BestScore) {
+        try {
+            if (PlayerName == null || BestScore == null || IDSelected == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+
+
+                PreparedStatement ps = Main.db.prepareStatement("UPDATE Users SET BestScore = ? WHERE Name = ? AND UserID = ? ");
+                ps.setInt(1, BestScore);
+            ps.setString(2, PlayerName );
+            ps.setInt(3, IDSelected);
+                ps.execute();
+                return "{\"status\": \"OK\"}";
+
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to update item, please see server console for more info.\"}";
+        }
+    }
+
 
     @GET
     @Path("selectAllUsers")

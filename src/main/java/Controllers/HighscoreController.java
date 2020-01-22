@@ -88,26 +88,39 @@ public class HighscoreController {
     @Produces(MediaType.APPLICATION_JSON)
     public String selectTopThree() {
         System.out.println("/Highscores/selectTopThree");
+        String difficultySelected = "";
         JSONArray list = new JSONArray();
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores WHERE PositionOnBoard < 4 ORDER BY PositionOnBoard");
-            ResultSet results = ps.executeQuery();
-            while (results.next()) {
-                JSONObject item = new JSONObject();
+        for(int i = 0; i< 3; i++) {
+            try {
+                if (i == 0) {
+                    difficultySelected = "Easy";
+                } else if (i == 1) {
+                    difficultySelected = "Medium";
+                } else if (i == 2) {
+                    difficultySelected = "Hard";
+                }
 
-                item.put("PlayerName", results.getString(1));
-                item.put("Difficulty", results.getString(2));
-                item.put("PositionOnBoard", results.getInt(3));
-                item.put( "Score", results.getInt(4));
-                item.put( "UserID", results.getInt(5));
-                list.add(item);
+                    PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores WHERE PositionOnBoard < 4 AND  Difficulty = ? ORDER BY PositionOnBoard");
+                    ps.setString(1, difficultySelected);
+                    ResultSet results = ps.executeQuery();
+                    while (results.next()) {
+                        JSONObject item = new JSONObject();
+
+                        item.put("PlayerName", results.getString(1));
+                        item.put("Difficulty", results.getString(2));
+                        item.put("PositionOnBoard", results.getInt(3));
+                        item.put("Score", results.getInt(4));
+                        item.put("UserID", results.getInt(5));
+                        list.add(item);
+                    }
+
+                } catch (Exception exception) {
+                    System.out.println("Database error: " + exception.getMessage());
+                    return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
+                }
             }
-            return list.toString();
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
+        return list.toString();
         }
-    }
 
     public static int  ScoreCheck(String difficultySelected){
 
@@ -131,7 +144,7 @@ public class HighscoreController {
     @Path("updateScores")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String  updateScore(@FormDataParam("Name") String PlayerName, @FormDataParam("Difficulty") String Difficulty, @FormDataParam("Score") Integer Score,@FormDataParam("UserID") Integer UserID) {
+    public String  updateScores(@FormDataParam("Name") String PlayerName, @FormDataParam("Difficulty") String Difficulty, @FormDataParam("Score") Integer Score,@FormDataParam("UserID") Integer UserID) {
             try {
                 if (PlayerName == null || Score == null || Difficulty == null|| UserID == null) {
                     throw new Exception("One or more form data parameters are missing in the HTTP request.");

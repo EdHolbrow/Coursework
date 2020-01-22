@@ -76,6 +76,7 @@ function gameSetup() {
     document.getElementById("hidebutton1").style.visibility = "hidden";
     document.getElementById("hidebutton2").style.visibility = "hidden";
     document.getElementById("hidebutton3").style.visibility = "hidden";
+    document.getElementById("hidebutton4").style.visibility = "hidden";
 
     document.getElementById("winnerLabel").style.visibility = "hidden";
 }

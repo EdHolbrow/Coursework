@@ -1,5 +1,8 @@
 function pageLoad() {
-   createEasy();
+   createAll();
+    createTopThree();
+    document.getElementById("listTopThree").style.display = "none";
+
 }
 function createAll(){
 
@@ -33,6 +36,51 @@ function createAll(){
         document.getElementById("listScores").innerHTML = ScoresHTML;
     });
 
+}
+function createTopThree(){
+
+    //creates the table headings
+
+    let ScoresHTML = '<table>' +
+        '<tr>' +
+        '<th>Player Name</th>' +
+        '<th>Difficulty</th>' +
+        '<th>Position on Board</th>' +
+        '<th>Score</th>' +
+        '<th class="last">UserID</th>' +
+        '</tr>';
+
+// fetch statement to call the API
+
+    fetch('/Highscores/selectTopThree', {method: 'get'}
+    ).then(response => response.json()
+    ).then(Scores => {
+        //assigns the data in the table to the columns
+        for (let Score of Scores) {
+            ScoresHTML += `<tr>` +
+                `<td>${Score.PlayerName}</td>` +
+                `<td>${Score.Difficulty}</td>` +
+                `<td>${Score.PositionOnBoard}</td>` +
+                `<td>${Score.Score}</td>` +
+                `<td>${Score.UserID}</td>` +
+                `<td class="last">` +
+                `</td>` +
+                `</tr>`;
+
+        }
+        ScoresHTML += '</table>';
+//assigns the table to the HTML element
+        document.getElementById("listTopThree").innerHTML = ScoresHTML;
+    });
+
+}
+function listTopThree() {
+// Hides all tables other than ListTopThree and shows that
+document.getElementById("listScores").style.display = "none";
+  //  document.getElementById("listEasy").style.display = "none";
+   // document.getElementById("listMedium").style.display = "none";
+   // document.getElementById("listHard").style.display = "none";
+    document.getElementById("listTopThree").style.display = "block";
 }
 function createEasy() {
 
@@ -81,6 +129,7 @@ function listEasy() {
     document.getElementById("listScores").style.display = "none";
     document.getElementById("listEasy").style.display = "block";
 }
+
 
 function getFormDataEasy(json) {
     let formData = new FormData();

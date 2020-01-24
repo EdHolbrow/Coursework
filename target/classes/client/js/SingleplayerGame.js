@@ -15,14 +15,16 @@ let roundcount = 0;
 function gotoMenu() {
     let quitVar = confirm("Are you sure you want to leave?");
     if (quitVar === true) {
-        window.location.replace(window.location.href='/client/Menu.html');
+        window.location.replace(window.location.href = '/client/Menu.html');
     }
 }
-function showHelp(){
+
+function showHelp() {
     alert("The aim of the game is to get the lowest score in the amount of rounds you have, each card scores its number," +
         " a pair of cards scores 0 and so do kings. Whereas jacks and queens score ten each, so try and get pairs and " +
         "kings to score as low as possible!" + " You can discard cards if you don't want them in your hand.")
 }
+
 function gameSetup() {
     let gamedifficulty = localStorage.getItem("GameDifficulty");
     if (gamedifficulty === "Easy") {
@@ -35,6 +37,8 @@ function gameSetup() {
     document.getElementById("timer").textContent = roundcount + " rounds left!";
     document.getElementById("hidebutton").style.visibility = "hidden";
     document.getElementById("scoreLabel").style.visibility = "hidden";
+    document.getElementById("bestScoreLabel").style.visibility = "hidden";
+    document.getElementById("highScoreLabel").style.visibility = "hidden";
 }
 
 function startGame() {
@@ -243,27 +247,29 @@ function endgame() {
         cardsScored = 4;
         showCards(score);
     }
-    if (cardsScored === 4){
+    if (cardsScored === 4) {
         showCards(score);
     }
     score += findJQs();
-    if (cardsScored === 4){
+    if (cardsScored === 4) {
         showCards(score);
     }
-for(i =0; i<4;i++){
-    if(kingArray[i] ===0 && JQArray[i]===0 && matchArray[i] ===0){
-        score += (cardArray[i] % 13);
-        alert(score);
+    for (i = 0; i < 4; i++) {
+        if (kingArray[i] === 0 && JQArray[i] === 0 && matchArray[i] === 0) {
+            score += (cardArray[i] % 13);
+            alert(score);
+        }
     }
+    showCards(score);
 }
-showCards(score);
-}
-let kingArray= [0,0,0,0];
+
+let kingArray = [0, 0, 0, 0];
+
 function calcKings() {
     let kingCount = 0;
     let cardArray = [trueValue1, trueValue2, trueValue3, trueValue4];
 
-    for(i = 0;i<4;i++){
+    for (i = 0; i < 4; i++) {
         if (cardArray[i] === 13 || cardArray[i] === 26 || cardArray[i] === 39 || cardArray[i] === 52) {
             kingCount += 1;
             kingArray[i] = 1;
@@ -273,6 +279,7 @@ function calcKings() {
 }
 
 let matchArray = [0, 0, 0, 0];
+
 function findPairs(cardsScored) {
     let cardArray = [trueValue1, trueValue2, trueValue3, trueValue4];
 
@@ -280,7 +287,7 @@ function findPairs(cardsScored) {
     if (cardsScored === 3) {
         return 0;
     }
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < 3; i++) {
         if (matchArray[i] === 0) {
             if (cardArray[i] < 14) {
                 for (x = (i + 1); x < 4; x++) {
@@ -328,12 +335,13 @@ function findPairs(cardsScored) {
     return matchCount;
 }
 
-let JQArray = [0,0,0,0];
+let JQArray = [0, 0, 0, 0];
+
 function findJQs() {
     let cardArray = [trueValue1, trueValue2, trueValue3, trueValue4];
     let jackValue = 0;
     let queenValue = 0;
-    for(i = 0; i< 4; i++) {
+    for (i = 0; i < 4; i++) {
         switch (cardArray[i]) {
             case 11:
             case 24:
@@ -355,14 +363,91 @@ function findJQs() {
 }
 
 function showCards(score) {
-    document.getElementById("scoreLabel").textContent = "Well done! Your total score this game was: " + score;
-    for(i=0;i<4;i++){
-        if(i===0){changeCard(trueValue1, 1)}
-        if(i===1){changeCard(trueValue2, 2)}
-        if(i===2){changeCard(trueValue3, 3)}
-        if(i===3){changeCard(trueValue4, 4)}
+    let currentID = localStorage.getItem("currentID");
+    document.getElementById("scoreLabel").textContent = "Well done! Your total score this game was: 21" /*+ score*/;
+    for (i = 0; i < 4; i++) {
+        if (i === 0) {
+            changeCard(trueValue1, 1)
+        }
+        if (i === 1) {
+            changeCard(trueValue2, 2)
+        }
+        if (i === 2) {
+            changeCard(trueValue3, 3)
+        }
+        if (i === 3) {
+            changeCard(trueValue4, 4)
+        }
     }
     document.getElementById("scoreLabel").style.visibility = "visible";
+    document.getElementById("highScoreLabel").style.visibility = "visible";
+   // checkBestScore(score);
+   // checkHScoreUpdate(score);
+}
+
+function checkBestScore(lastscore) {
+    //takes values from local storage, which is a way to send parameters between pages
+    let currentPlayer = localStorage.getItem("currentplayer");
+    let currentID = localStorage.getItem("currentID");
+    //Stops the process if the user is playing as a guest
+    if (currentID !== 0) {
+        //turns the data into a suitable format
+        let formData = new FormData();
+        formData.append("PlayerName   ", JSON.stringify(currentPlayer));
+        formData.append("UserID   ", currentID);
+
+//first fetch command, used to get the current best score
+        fetch('/Users/selectScore', {method: 'post', body: formData}
+        ).then(response => response.json()
+        ).then(Score => {
+
+            console.log(formData);
+            //checks to see if the user's new score is better than their previous best score
+            if (Score > lastscore) {
+                formData.append("Score   ", lastscore);
+//second fetch command, performs the update
+                fetch('/Users/updateBestScore', {method: 'post', body: formData}
+                ).then(response => response.json()
+                ).then(BestScoreUpdate => {
+                    if (BestScoreUpdate.hasOwnProperty('error')) {
+                        alert(BestScoreUpdate.error);
+                    } else {
+                        //notifies the user of the new best score
+                        console.log(currentID + " best score updated");
+                        document.getElementById("bestScoreLabel").style.visibility = "visible";
+                    }
+                });
+            }
+        });
+    }
+}
+function checkHScoreUpdate(lastscore){
+    //takes values from local storage, which is a way to send parameters between pages
+    let currentPlayer = localStorage.getItem("currentplayer");
+    let gamedifficulty = localStorage.getItem("GameDifficulty");
+    let currentID = localStorage.getItem("currentID");
+    //Stops the process if the user is playing as a guest
+    if (currentID !== 0) {
+        //turns the data into a suitable format
+        let formData = new FormData();
+        formData.append("Name   ", JSON.stringify(currentPlayer));
+        formData.append("Difficulty   ", JSON.stringify(currentPlayer));
+        formData.append("Score   ", lastscore);
+        formData.append("UserID   ", currentID);
+
+//fetch command, performs the update - dont need to check if score is good enough as API does that
+        fetch('/Highscores/updateScores', {method: 'post', body: formData}
+        ).then(response => response.json()
+        ).then(HighScoreUpdate => {
+            if (HighScoreUpdate.hasOwnProperty('error')) {
+                alert(HighScoreUpdate.error);
+            } else {
+                //notifies the user of the new highscore
+                console.log("New HighScore");
+                document.getElementById("highScoreLabel").style.visibility = "visible";
+            }
+        });
+    }
 }
 
 function changeCard(cardValue, cardNum) {

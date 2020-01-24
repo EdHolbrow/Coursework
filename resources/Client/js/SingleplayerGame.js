@@ -38,6 +38,7 @@ function gameSetup() {
     document.getElementById("hidebutton").style.visibility = "hidden";
     document.getElementById("scoreLabel").style.visibility = "hidden";
     document.getElementById("bestScoreLabel").style.visibility = "hidden";
+    document.getElementById("highScoreLabel").style.visibility = "hidden";
 }
 
 function startGame() {
@@ -363,7 +364,7 @@ function findJQs() {
 
 function showCards(score) {
     let currentID = localStorage.getItem("currentID");
-    document.getElementById("scoreLabel").textContent = "Well done! Your total score this game was: " + score;
+    document.getElementById("scoreLabel").textContent = "Well done! Your total score this game was: 21" /*+ score*/;
     for (i = 0; i < 4; i++) {
         if (i === 0) {
             changeCard(trueValue1, 1)
@@ -379,7 +380,9 @@ function showCards(score) {
         }
     }
     document.getElementById("scoreLabel").style.visibility = "visible";
-    checkBestScore(score);
+    document.getElementById("highScoreLabel").style.visibility = "visible";
+   // checkBestScore(score);
+   // checkHScoreUpdate(score);
 }
 
 function checkBestScore(lastscore) {
@@ -418,7 +421,34 @@ function checkBestScore(lastscore) {
         });
     }
 }
+function checkHScoreUpdate(lastscore){
+    //takes values from local storage, which is a way to send parameters between pages
+    let currentPlayer = localStorage.getItem("currentplayer");
+    let gamedifficulty = localStorage.getItem("GameDifficulty");
+    let currentID = localStorage.getItem("currentID");
+    //Stops the process if the user is playing as a guest
+    if (currentID !== 0) {
+        //turns the data into a suitable format
+        let formData = new FormData();
+        formData.append("Name   ", JSON.stringify(currentPlayer));
+        formData.append("Difficulty   ", JSON.stringify(currentPlayer));
+        formData.append("Score   ", lastscore);
+        formData.append("UserID   ", currentID);
 
+//fetch command, performs the update - dont need to check if score is good enough as API does that
+        fetch('/Highscores/updateScores', {method: 'post', body: formData}
+        ).then(response => response.json()
+        ).then(HighScoreUpdate => {
+            if (HighScoreUpdate.hasOwnProperty('error')) {
+                alert(HighScoreUpdate.error);
+            } else {
+                //notifies the user of the new highscore
+                console.log("New HighScore");
+                document.getElementById("highScoreLabel").style.visibility = "visible";
+            }
+        });
+    }
+}
 
 function changeCard(cardValue, cardNum) {
     cardCount += 1;

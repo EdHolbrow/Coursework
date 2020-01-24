@@ -2,9 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create a New User</title>
+    <title>Create a New User</title>#
+    <link href="css/Styles.css" rel="stylesheet" type="text/css">
+    <script src="/client/js/NewUser.js"></script>
 </head>
-<body>
+<body onload="hideLabel()">
+<h1>Add a New User</h1>
+<div align = "center">
+<form>
+<h2>Fill in the details below to create a new user</h2>
+    <label><b>Name</b></label>
+    <input type="text" placeholder="Enter Player Name" id = "playername" name="name" />
+<br>
+    <label><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" id = "passwrd" name="password" />
+<br>
 
+
+<br>
+    <button type="submit" class="button" onclick="addUser()">Create New Player</button>
+    <button type="submit" class="button"onclick="clearDetails()">Clear</button>
+    <br>
+
+</form>
+
+    <label id = "newUserLabel" >New user added!</label>
+<br>
+ <button type="button" class="button" onclick="gotoMenu()">Back to Menu</button>
+</div>
 </body>
 </html>

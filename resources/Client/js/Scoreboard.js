@@ -1,10 +1,14 @@
 function pageLoad() {
-   createAll();
+    createAll();
     createTopThree();
     document.getElementById("listTopThree").style.display = "none";
+    document.getElementById("listEasy").style.display = "none";
+    document.getElementById("listMedium").style.display = "none";
+    document.getElementById("listHard").style.display = "none";
 
 }
-function createAll(){
+
+function createAll() {
 
     let ScoresHTML = '<table>' +
         '<tr>' +
@@ -37,7 +41,8 @@ function createAll(){
     });
 
 }
-function createTopThree(){
+
+function createTopThree() {
 
     //creates the table headings
 
@@ -74,16 +79,18 @@ function createTopThree(){
     });
 
 }
+
 function listTopThree() {
 // Hides all tables other than ListTopThree and shows that
-document.getElementById("listScores").style.display = "none";
-  //  document.getElementById("listEasy").style.display = "none";
-   // document.getElementById("listMedium").style.display = "none";
-   // document.getElementById("listHard").style.display = "none";
+    document.getElementById("listScores").style.display = "none";
+    //  document.getElementById("listEasy").style.display = "none";
+    // document.getElementById("listMedium").style.display = "none";
+    // document.getElementById("listHard").style.display = "none";
     document.getElementById("listTopThree").style.display = "block";
 }
-function createEasy() {
 
+function createEasy() {
+    //creates the table headings
     let EasyScoresHTML = '<table>' +
         '<tr>' +
         '<th>PlayerName</th>' +
@@ -93,19 +100,18 @@ function createEasy() {
         '<th class="last">UserID</th>' +
         '</tr>';
 
-
+    //converts the string difficulty into a JSON string - which is an accepted data type in fetch statements
     let formData = new FormData();
-    formData.append("DifficultySelected   ", "Easy");
-
+    formData.append("DifficultySelected   ", JSON.stringify("Easy"));
     console.log(formData);
 
-
-    fetch('/Highscores/selectDifficulty', {method: 'post', body:formData}
+    // fetch statement to call the API
+    fetch('/Highscores/selectDifficulty', {method: 'post', body: formData}
     ).then(response => response.json()
     ).then(Scores => {
 
         console.log(formData);
-
+        //assigns the data in the table to the columns
         for (let Score of Scores) {
             EasyScoresHTML += `<tr>` +
                 `<td>${Score.PlayerName}</td>` +
@@ -116,18 +122,19 @@ function createEasy() {
                 `<td class="last">` +
                 `</td>` +
                 `</tr>`;
-
         }
         EasyScoresHTML += '</table>';
-
         document.getElementById("listEasy").innerHTML = EasyScoresHTML;
-
     });
 }
+
 function listEasy() {
-    alert("test");
+    // Hides all tables other than ListEasy and shows that
     document.getElementById("listScores").style.display = "none";
     document.getElementById("listEasy").style.display = "block";
+    document.getElementById("listMedium").style.display = "none";
+    document.getElementById("listHard").style.display = "none";
+
 }
 
 

@@ -17,19 +17,19 @@ public class HighscoreController {
     @Path("selectAll")
     @Produces(MediaType.APPLICATION_JSON)
     public String  selectAllScores() {
-        String difficultySelected = "";
+        String difficultySelected = "Hard";
         System.out.println("Highscores/selectAll");
         JSONArray list = new JSONArray();
 
-            for(int i = 0; i< 3; i++) {
+           // for(int i = 0; i< 3; i++) {
                 try {
-                if(i==0){
+               /* if(i==0){
                     difficultySelected = "Easy";
                 } else if(i==1){
                     difficultySelected = "Medium";
                 } else if(i==2){
                     difficultySelected = "Hard";
-                }
+                } */
                 PreparedStatement ps = Main.db.prepareStatement("SELECT PlayerName, Difficulty, PositionOnBoard, Score, UserID FROM HighScores WHERE Difficulty = ? ORDER BY PositionOnBoard");
                 ps.setString(1, difficultySelected);
                 ResultSet results = ps.executeQuery();
@@ -50,7 +50,7 @@ public class HighscoreController {
             return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
 
         }
-    }
+//   }
         return list.toString();
     }
     @POST

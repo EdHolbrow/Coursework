@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2 Player Game</title>
+    <script src="/client/js/Multiplayer2.js"></script>
+    <link href="css/MultiplayerGameStyles.css" rel="stylesheet" type="text/css">
+
+</head>
+<body onload ="gameSetup()">
+
+<h1>Let's play!</h1>
+<div>
+    <table id = "P1playcards">
+        <tr>
+            <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card1" height="190" width="150" onclick = "card1Show(0)"></td>
+            <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card2" height="190" width="150" onclick = "card2Show(0)"></td>
+        </tr><tr>
+        <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card3" height="190" width="150" onclick = "card3Show(0)"></td>
+        <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card4" height="190" width="150" onclick = "card4Show(0)"></td>
+    </tr>
+        <tr>
+            <td colspan="2"><button type="button" id = "hidebutton1" onclick="hideCards1()" >Continue</button></td>
+        </tr>
+    </table>
+</div>
+<div>
+    <table id = "P2playcards">
+        <tr>
+            <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card5" height="190" width="150" onclick = "card5Show(0)"></td>
+            <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card6" height="190" width="150" onclick = "card6Show(0)"></td>
+        </tr><tr>
+        <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card7" height="190" width="150" onclick = "card7Show(0)"></td>
+        <td><img src="img/Card%20Back.png" alt = "CardBack" id = "card8" height="190" width="150" onclick = "card8Show(0)"></td>
+    </tr>
+        <tr>
+            <td colspan="2"><button type="button" id = "hidebutton2" onclick="hideCards2()" >Continue</button></td>
+        </tr>
+    </table>
+</div>
+
+<div id="playbuttondiv">
+    <table>
+        <tr><td><p  id = "scoreLabel1" >PlaceHolder</p></td></tr>
+        <tr><td><p  id = "scoreLabel2" >PlaceHolder</p></td></tr>
+        <tr><td><p  id = "winnerLabel" >PlaceHolder</p></td></tr>
+        <tr><td><button type="button" id = "playbutton" onclick=startGame()>Play</button></td></tr>
+
+    </table>
+</div>
+<div>
+    <table id = "decktable"  >
+        <tr>
+            <td colspan="2"><p  id = "timer" >PlaceHolder</p></td>
+        </tr>
+        <tr>
+            <td><img src="img/Card%20Back.png" alt = "CardBack" id = "deck" onclick="drawCard()" height="286" width="218"></td>
+            <td><img src="img/DiscardPile.PNG" alt = "CardBack" id = "discard" onclick="discardCard()" height="286" width="218"></td>
+        </tr><tr>
+
+        <td>            <button type="button"onclick="showHelp()" >How to Play</button></td>
+        <td>   <button type="button" onclick="gotoMenu()">Quit Game</button></td>
+
+    </tr>
+    </table>
+</div>
+</body>
+</html>

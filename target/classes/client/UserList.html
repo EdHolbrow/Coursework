@@ -14,5 +14,25 @@
     UserList
 </h1>
 <div id = "ListUsers"></div>
+<div id = "ListUser"></div>
+<div id = "bruh">
+    <form>
+        <label>Want to find a certain player? Enter their ID here and click Search</label>
+        <input type="text" placeholder="Enter User ID" id = "IDSearch"  />
+        <button type="submit" class="button" onclick="findUser()">Search</button>
+
+    </form>
+</div>
+
+<div id = "bruh2">
+    <form>
+        <label>Want to delete your user details? Enter your userID, username and password here and click Delete</label>
+        <input type="text" placeholder="Enter User ID" id = "deleteID"  />
+        <input type="text" placeholder="Enter User Name" id = "deleteName"  />
+        <input type="password" placeholder="Enter User password" id = "deletePwrd"  />
+        <button type="submit" class="button" onclick="deleteUser()">Delete</button>
+
+    </form>
+</div>
 </body>
 </html>
